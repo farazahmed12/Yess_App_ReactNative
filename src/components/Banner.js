@@ -23,14 +23,14 @@ const Banner = ({data}) => {
       <View style={styles.renderBannerStyle}>
         <Image
           source={{uri: item}}
-          resizeMode="cover"
+          resizeMode="stretch"
           style={styles.bannerImg}
         />
       </View>
     );
   };
   return (
-    <View className="relative">
+    <View style={{flex: 1, width: '100%'}}>
       <View style={styles.container}>
         <FlatList
           data={data ? data : []}
@@ -93,12 +93,14 @@ export default Banner;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '92%',
+    alignItems: 'center',
+    // justifyContent: 'center',
     borderRadius: widthPercentageToDP(2),
-    backgroundColor: 'gray',
-    marginTop: heightPercentageToDP(3),
+    // marginTop: heightPercentageToDP(3),
     height: heightPercentageToDP(30),
     overflow: 'hidden',
+    alignSelf: 'center',
   },
   dotConatiner: {
     // flex: 1,
@@ -120,7 +122,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   renderBannerStyle: {
-    width: width * 0.9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: widthPercentageToDP(92),
     height: heightPercentageToDP(30),
     overflow: 'hidden',
   },
