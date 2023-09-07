@@ -20,10 +20,10 @@ const Banner = ({data}) => {
 
   const renderBanner = ({item}) => {
     return (
-      <View style={styles.renderBannerStyle}>
+      <View style={styles.renderBannerStyle} className="rounded-2xl">
         <Image
           source={{uri: item}}
-          resizeMode="stretch"
+          resizeMode="cover"
           style={styles.bannerImg}
         />
       </View>
@@ -31,7 +31,7 @@ const Banner = ({data}) => {
   };
   return (
     <View style={{flex: 1, width: '100%'}}>
-      <View style={styles.container}>
+      <View style={styles.container} className="rounded-2xl">
         <FlatList
           data={data ? data : []}
           renderItem={renderBanner}
@@ -77,7 +77,7 @@ const Banner = ({data}) => {
                     styles.normalDot,
                     {
                       width: animatedWidth,
-                      opacity: Math.round(activeIndex) == imageIndex ? 1 : 0.5,
+                      opacity: Math.round(activeIndex) == imageIndex ? 1 : 0.3,
                     },
                   ]}
                 />
@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
   container: {
     width: '92%',
     alignItems: 'center',
+
     // justifyContent: 'center',
     borderRadius: widthPercentageToDP(2),
     // marginTop: heightPercentageToDP(3),
-    height: heightPercentageToDP(30),
+    height: heightPercentageToDP(40),
     overflow: 'hidden',
     alignSelf: 'center',
   },
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: widthPercentageToDP(92),
-    height: heightPercentageToDP(30),
+    height: heightPercentageToDP(40),
     overflow: 'hidden',
   },
   bannerImg: {

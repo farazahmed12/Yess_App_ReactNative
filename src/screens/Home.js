@@ -10,6 +10,7 @@ import React from 'react';
 import Banner from '../components/Banner';
 import {images} from '../images';
 import color from '../constants/color';
+import Card from '../components/Card';
 
 const Home = () => {
   const imgData = [
@@ -22,6 +23,27 @@ const Home = () => {
   ];
 
   const category = ['For You', 'Education', 'Technology', 'Entertainment'];
+
+  const BlogsList = [
+    {
+      category: 'Education',
+      title:
+        'Lorem ipsum is a placeholder text commonly used to demonstrate the visual',
+      time: '1 min ago',
+    },
+    {
+      category: 'Technology',
+      title:
+        'Lorem ipsum is a placeholder text commonly used to demonstrate the visual',
+      time: '10 min ago',
+    },
+    {
+      category: 'Entertainment',
+      title:
+        'Lorem ipsum is a placeholder text commonly used to demonstrate the visual',
+      time: '22 min ago',
+    },
+  ];
 
   return (
     <ScrollView className="flex-1 ">
@@ -44,6 +66,21 @@ const Home = () => {
                 style={{backgroundColor: color.colorPrimary}}>
                 <Text className="text-white">{item}</Text>
               </View>
+            );
+          }}
+        />
+      </View>
+
+      <View className="mt-3">
+        <FlatList
+          data={BlogsList}
+          renderItem={({item}) => {
+            return (
+              <Card
+                category={item.category}
+                title={item.title}
+                time={item.time}
+              />
             );
           }}
         />
