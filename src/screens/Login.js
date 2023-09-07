@@ -4,6 +4,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -19,6 +20,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import InputField from '../components/Input';
 import PillButton from '../components/PillButton';
+import {images} from '../images';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -77,7 +79,8 @@ const Login = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
           <View className="self-center w-[90%]">
-            <Text className="text-center items-start font-bold text-black ">{`Login`}</Text>
+            <Image source={images.logo} className="w-28 h-28 self-center" />
+            <Text className="text-center items-start font-semi text-black ">{`Login`}</Text>
             <Formik
               initialValues={{
                 email: 'abc@gmail.com',
@@ -98,10 +101,6 @@ const Login = () => {
               }) => {
                 return (
                   <View className="w-full">
-                    {/* <Text className="text-left items-start font-normal mt-3 ">
-                      Please Enter Your Email Address and Password
-                    </Text> */}
-
                     <InputField
                       placeholder="Email Address"
                       value={values.email}
