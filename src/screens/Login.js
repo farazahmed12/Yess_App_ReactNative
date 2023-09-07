@@ -79,8 +79,8 @@ const Login = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
           <View className="self-center w-[90%]">
-            <Image source={images.logo} className="w-28 h-28 self-center" />
-            <Text className="text-center items-start font-semi text-black ">{`Login`}</Text>
+            <Image source={images.logo} className="w-40 h-40 self-center" />
+
             <Formik
               initialValues={{
                 email: 'abc@gmail.com',
@@ -129,7 +129,7 @@ const Login = () => {
                       <View className="border border-[#ddd] w-6/12 h-0"></View>
                     </View>
 
-                    <Pressable onPress={() => navigation.navigate('Register')}>
+                    <Pressable onPress={() => navigation.navigate('Home')}>
                       <Text className="text-center underline text-sm mt-5">
                         Create Account
                       </Text>

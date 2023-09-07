@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
   return (
-    <Stack.Navigator initialRouteName={false ? 'HomeStack' : 'AuthStack'}>
+    <Stack.Navigator initialRouteName={true ? 'HomeStack' : 'AuthStack'}>
       <Stack.Screen
         name="AuthStack"
         component={AuthStack}
