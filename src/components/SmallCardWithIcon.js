@@ -9,12 +9,13 @@ const SmallCardWithIcon = ({
   time,
   isIcon = false,
   iconSrc = '',
+  imgSrc = images.HomeLogo,
 }) => {
   return (
     <View className="shadow-md flex flex-row  rounded-lg  my-2 bg-gray-100">
       <View className="w-3/12">
         <Image
-          source={images.HomeLogo}
+          source={typeof imgSrc === 'string' ? {uri: imgSrc} : imgSrc}
           className={`w-24 h-24 m-3 object-cover rounded-lg bg-[${color.colorPrimary}]`}
         />
       </View>
@@ -25,7 +26,7 @@ const SmallCardWithIcon = ({
           </Text>
           {isIcon && <Image className=" h-5 w-5 mt-1" source={iconSrc} />}
         </View>
-        <View className="flex flex-row  mt-2 gap-x-3 w-12/12 ml-6">
+        <View className="flex flex-row mt-2 gap-x-3 w-12/12 ml-6">
           <Text
             className={`font-bold text-xs`}
             style={{color: color.colorPrimary}}>

@@ -37,7 +37,7 @@ const Profile = () => {
   return (
     <View className="flex-1 px-4 mt-5">
       <View className="flex flex-row justify-end">
-        <Image source={images.AddLogo} className="w-5 h-5" />
+        <Image source={images.MenuLogo} className="w-5 h-5" />
       </View>
       {/* Profile Image */}
       <View className="flex justify-center items-center mt-1">

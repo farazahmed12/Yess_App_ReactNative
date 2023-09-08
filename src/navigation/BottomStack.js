@@ -7,6 +7,7 @@ import Home from '../screens/Home';
 import Search from '../screens/Search';
 import Profile from '../screens/Profile';
 import color from '../constants/color';
+import Video from '../screens/Video';
 
 const {width, height} = Dimensions.get('window');
 
@@ -32,7 +33,7 @@ const BottomStack = () => {
           />
           <Text
             style={{color: focused ? color.colorPrimary : 'black'}}
-            className={`${focused ? `font-bold ] ` : ''} text-xs uppercase`}>
+            className={`${focused ? `font-bold ` : ''} text-xs uppercase`}>
             {name}
           </Text>
         </View>
@@ -67,6 +68,13 @@ const BottomStack = () => {
         component={Search}
         options={{
           tabBarIcon: BottomTabComponent('Search', images.SearchLogo),
+        }}
+      />
+      <Tab.Screen
+        name="Video"
+        component={Video}
+        options={{
+          tabBarIcon: BottomTabComponent('Video', images.UserLogo),
         }}
       />
       <Tab.Screen
