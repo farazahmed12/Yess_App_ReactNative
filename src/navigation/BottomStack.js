@@ -6,6 +6,7 @@ import {images} from '../images';
 import Home from '../screens/Home';
 import Search from '../screens/Search';
 import Profile from '../screens/Profile';
+import color from '../constants/color';
 
 const {width, height} = Dimensions.get('window');
 
@@ -18,12 +19,20 @@ const BottomStack = () => {
     ({focused}) => {
       return (
         <View
-          style={{width: width * 0.25}}
-          className={`items-center ${
-            focused ? 'border-b-2 border-black' : ''
-          }`}>
-          <Image className="w-6 h-6" resizeMode="contain" source={image} />
-          <Text className={`${focused ? 'font-bold ' : ''} text-xs uppercase`}>
+          style={{
+            width: width * 0.25,
+            borderColor: color.colorPrimary,
+          }}
+          className={`items-center ${focused ? `border-b-2 ` : ''}`}>
+          <Image
+            style={{tintColor: focused ? color.colorPrimary : 'black'}}
+            className="w-6 h-6"
+            resizeMode="contain"
+            source={image}
+          />
+          <Text
+            style={{color: focused ? color.colorPrimary : 'black'}}
+            className={`${focused ? `font-bold ] ` : ''} text-xs uppercase`}>
             {name}
           </Text>
         </View>

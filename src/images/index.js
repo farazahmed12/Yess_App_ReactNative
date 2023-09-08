@@ -6,4 +6,5 @@ export const images = {
   SearchLogo: require('./search.png'),
   UserLogo: require('./user.png'),
   MenuLogo: require('./menus.png'),
+  DotsLogo: require('./dots.png'),
 };
