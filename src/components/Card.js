@@ -3,9 +3,10 @@ import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 
-const Card = ({category, title, time}) => {
+const Card = ({category, title, time, onPress}) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       activeOpacity={0.8}
       className="shadow-md flex flex-row  rounded-lg mx-4 my-2 bg-gray-100">
       <Image

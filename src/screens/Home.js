@@ -11,6 +11,7 @@ import Banner from '../components/Banner';
 import {images} from '../images';
 import color from '../constants/color';
 import Card from '../components/Card';
+import {useNavigation} from '@react-navigation/native';
 
 const Home = () => {
   const imgData = [
@@ -45,6 +46,9 @@ const Home = () => {
     },
   ];
 
+  // navigation
+  const navigation = useNavigation();
+
   return (
     <ScrollView className="flex-1 ">
       <View className="flex flex-row px-4 justify-between mt-3 mb-3">
@@ -74,12 +78,14 @@ const Home = () => {
       <View className="mt-3">
         <FlatList
           data={BlogsList}
+          ListFooterComponent={() => <View className="mb-14" />}
           renderItem={({item}) => {
             return (
               <Card
                 category={item.category}
                 title={item.title}
                 time={item.time}
+                onPress={() => navigation.navigate('BlogDetails')}
               />
             );
           }}

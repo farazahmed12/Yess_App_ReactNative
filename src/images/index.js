@@ -7,4 +7,5 @@ export const images = {
   UserLogo: require('./user.png'),
   MenuLogo: require('./menus.png'),
   DotsLogo: require('./dots.png'),
+  AngleLeft: require('./angle-left.png'),
 };

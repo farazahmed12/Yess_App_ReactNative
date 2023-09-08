@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import BottomStack from './BottomStack';
+import BlogDetails from '../screens/BlogDetails';
 
 // stack
 const Stack = createNativeStackNavigator();
@@ -16,11 +17,11 @@ const HomeStack = () => {
         options={{headerShown: false}}
       />
 
-      {/* <Stack.Screen
-        name="RegisterComplain"
-        component={RegisterComplain}
+      <Stack.Screen
+        name="BlogDetails"
+        component={BlogDetails}
         options={{headerShown: false}}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
