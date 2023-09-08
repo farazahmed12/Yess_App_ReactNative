@@ -5,6 +5,7 @@ import {images} from '../images';
 
 import Home from '../screens/Home';
 import Search from '../screens/Search';
+import Profile from '../screens/Profile';
 
 const {width, height} = Dimensions.get('window');
 
@@ -57,6 +58,13 @@ const BottomStack = () => {
         component={Search}
         options={{
           tabBarIcon: BottomTabComponent('Search', images.SearchLogo),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: BottomTabComponent('Profile', images.UserLogo),
         }}
       />
     </Tab.Navigator>
