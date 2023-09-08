@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {images} from '../images';
 
 import Home from '../screens/Home';
+import Search from '../screens/Search';
 
 const {width, height} = Dimensions.get('window');
 
@@ -49,6 +50,13 @@ const BottomStack = () => {
         component={Home}
         options={{
           tabBarIcon: BottomTabComponent('Home', images.HomeLogo),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarIcon: BottomTabComponent('Search', images.SearchLogo),
         }}
       />
     </Tab.Navigator>

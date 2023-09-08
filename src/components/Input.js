@@ -8,12 +8,15 @@ const InputField = ({
   secureTextEntry = false,
   marginTailwind = '',
   paddingTailwind = '',
+  isBorder = true,
   ...props
 }) => {
   return (
     <TextInput
       secureTextEntry={secureTextEntry}
-      className={`border border-gray-400 rounded-md ${marginTailwind} ${paddingTailwind}`}
+      className={`${
+        isBorder && 'border'
+      } border-gray-400 rounded-md ${marginTailwind} ${paddingTailwind}`}
       placeholder={placeholder}
       keyboardType={keyboardType}
       onChangeText={handleOnChangeTxt}

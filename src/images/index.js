@@ -3,4 +3,5 @@ export const images = {
   HomeLogo: require('./home.png'),
   BellLogo: require('./bell.png'),
   AddLogo: require('./add.png'),
+  SearchLogo: require('./search.png'),
 };
