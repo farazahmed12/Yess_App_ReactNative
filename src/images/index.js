@@ -8,4 +8,6 @@ export const images = {
   MenuLogo: require('./menus.png'),
   DotsLogo: require('./dots.png'),
   AngleLeft: require('./angle-left.png'),
+  ShieldLogo: require('./shield.png'),
+  StarLogo: require('./star.png'),
 };

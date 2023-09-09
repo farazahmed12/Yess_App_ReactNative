@@ -7,7 +7,7 @@ import Home from '../screens/Home';
 import Search from '../screens/Search';
 import Profile from '../screens/Profile';
 import color from '../constants/color';
-import Video from '../screens/Video';
+import Saved from '../screens/Saved';
 
 const {width, height} = Dimensions.get('window');
 
@@ -71,10 +71,10 @@ const BottomStack = () => {
         }}
       />
       <Tab.Screen
-        name="Video"
-        component={Video}
+        name="Saved"
+        component={Saved}
         options={{
-          tabBarIcon: BottomTabComponent('Video', images.UserLogo),
+          tabBarIcon: BottomTabComponent('Saved', images.StarLogo),
         }}
       />
       <Tab.Screen

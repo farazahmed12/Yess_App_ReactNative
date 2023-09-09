@@ -1,1 +1,1 @@
-export default color = {colorPrimary: '#7e56c6'};
+export default color = {colorPrimary: '#2E247A'};

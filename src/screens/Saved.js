@@ -11,7 +11,7 @@ import {images} from '../images';
 import color from '../constants/color';
 import SmallCardWithIcon from '../components/SmallCardWithIcon';
 
-const Video = () => {
+const Saved = () => {
   const category = ['For You', 'Education', 'Technology', 'Entertainment'];
 
   const data = [
@@ -98,6 +98,6 @@ const Video = () => {
   );
 };
 
-export default Video;
+export default Saved;
 
 const styles = StyleSheet.create({});
