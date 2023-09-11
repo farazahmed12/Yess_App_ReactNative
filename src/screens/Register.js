@@ -27,7 +27,7 @@ import {setUser} from '../redux/userSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-const Login = () => {
+const Register = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -36,7 +36,15 @@ const Login = () => {
 
   const [loading, setloading] = useState(false);
 
-  const SignInSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({
+    user_name: Yup.string()
+      .required('User Name is required')
+      .min(3)
+      .label('User Name'),
+    name: Yup.string().required('Name is required').min(3).label('Name'),
+    phone_number: Yup.number('Phone Number is required')
+      .min(11)
+      .label('Phone Number'),
     email: Yup.string()
       .email('This email address is not valid')
       .required('Please enter your email address!')
@@ -52,23 +60,19 @@ const Login = () => {
   const signIn = value => {
     setloading(true);
     axios
-      .post(`${BASE_URL}/user/login/user`, value)
+      .post(`${BASE_URL}/user/create/user`, value)
       .then(res => {
-        // console.log('res ==>', res?.data);
         dispatch(setUser(res.data));
         Toast.show({
           type: 'success',
-          text1: 'Login Successfully',
-          onHide: () => navigation.navigate('HomeStack'),
+          text1: 'User Registered Successfully',
+          onHide: () => navigation.navigate('Login'),
         });
       })
       .catch(error => {
-        // console.log('error ==>', error);
         Toast.show({
           type: 'error',
-          text1: 'Error While Logging In',
-          autoHide: true,
-          visibilityTime: 1000,
+          text1: 'Error while Registering User',
         });
       })
       .finally(() => {
@@ -87,17 +91,21 @@ const Login = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
           <View className="self-center w-[90%]">
-            <Image source={images.logo} className="w-40 h-40 self-center" />
+            <Image source={images.logo} className="w-28 h-28 self-center" />
 
             <Formik
               initialValues={{
+                user_name: 'user@123',
                 email: 'user@gmai.com',
+                name: 'user',
                 password: 'password',
+                phone_number: '0300012401',
+                devicetoken: 'asdasdq213dq14qr',
               }}
               onSubmit={value => {
                 signIn(value);
               }}
-              validationSchema={SignInSchema}>
+              validationSchema={RegisterSchema}>
               {({
                 values,
                 errors,
@@ -109,54 +117,105 @@ const Login = () => {
               }) => {
                 return (
                   <View className="w-full">
+                    {/* name */}
+                    <InputField
+                      placeholder="Name"
+                      value={values.name}
+                      handleOnChangeTxt={handleChange('name')}
+                      onBlur={() => setFieldTouched('name')}
+                      keyboardType={'default'}
+                      marginTailwind="my-1"
+                      paddingTailwind="px-3"
+                    />
+                    {errors?.name && touched?.name && (
+                      <Text className="text-red-700">{errors?.name}</Text>
+                    )}
+                    {/* username */}
+                    <InputField
+                      placeholder="User Name"
+                      value={values.user_name}
+                      handleOnChangeTxt={handleChange('user_name')}
+                      onBlur={() => setFieldTouched('user_name')}
+                      keyboardType={'default'}
+                      marginTailwind="my-1"
+                      paddingTailwind="px-3"
+                    />
+                    {errors?.user_name && touched?.user_name && (
+                      <Text className="text-red-700">{errors?.user_name}</Text>
+                    )}
+
+                    {/* Email */}
                     <InputField
                       placeholder="Email Address"
                       value={values.email}
                       handleOnChangeTxt={handleChange('email')}
                       onBlur={() => setFieldTouched('email')}
                       keyboardType={'email-address'}
-                      marginTailwind="my-3"
+                      marginTailwind="my-1"
                       paddingTailwind="px-3"
                     />
                     {errors?.email && touched?.email && (
                       <Text className="text-red-700">{errors?.email}</Text>
                     )}
 
+                    {/* password */}
                     <InputField
                       placeholder="Password"
                       value={values.password}
                       handleOnChangeTxt={handleChange('password')}
                       onBlur={() => setFieldTouched('password')}
                       keyboardType={'default'}
-                      secureTextEntry={true}
-                      marginTailwind="my-3 "
+                      marginTailwind="my-1"
                       paddingTailwind="px-3"
+                      secureTextEntry={true}
                     />
                     {errors?.password && touched?.password && (
                       <Text className="text-red-700">{errors?.password}</Text>
                     )}
 
+                    {/* phone number */}
+                    <InputField
+                      placeholder="Phone Number"
+                      value={values.phone_number}
+                      handleOnChangeTxt={handleChange('phone_number')}
+                      onBlur={() => setFieldTouched('phone_number')}
+                      keyboardType={'default'}
+                      marginTailwind="my-3"
+                      paddingTailwind="px-3"
+                    />
+                    {errors?.phone_number && touched?.phone_number && (
+                      <Text className="text-red-700">
+                        {errors?.phone_number}
+                      </Text>
+                    )}
+
                     <PillButton
                       loading={loading}
-                      name={'Login'}
+                      name={'Register'}
                       marginTailwind="mt-3"
                       onPress={handleSubmit}
                     />
-                    <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">
-                      <View className="border border-[#ddd] w-6/12 h-0"></View>
-                      <Text className="text-center uppercase my-2">or</Text>
-                      <View className="border border-[#ddd] w-6/12 h-0"></View>
-                    </View>
-
-                    <Pressable onPress={() => navigation.navigate('Register')}>
-                      <Text className="text-center underline text-sm mt-5">
-                        Create An Account
-                      </Text>
-                    </Pressable>
                   </View>
                 );
               }}
             </Formik>
+
+            <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">
+              <View className="border border-[#ddd] w-6/12 h-0"></View>
+              <Text className="text-center uppercase ">or</Text>
+              <View className="border border-[#ddd] w-6/12 h-0"></View>
+            </View>
+
+            <Pressable>
+              <Text className="text-center text-sm mt-2">
+                Already Have An Account?{' '}
+                <Text
+                  onPress={() => navigation.navigate('Login')}
+                  className="text-center underline text-sm mt-2">
+                  Log In
+                </Text>
+              </Text>
+            </Pressable>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -164,7 +223,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {

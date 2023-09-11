@@ -23,6 +23,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store} from './src/redux/store';
 import persistStore from 'redux-persist/es/persistStore';
+import Toast from 'react-native-toast-message';
 
 let persistor = persistStore(store);
 
@@ -37,6 +38,7 @@ function App() {
             <StatusBar backgroundColor={'black'} />
           </SafeAreaView>
           <MainStack />
+          <Toast />
         </NavigationContainer>
       </PersistGate>
     </Provider>

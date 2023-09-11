@@ -5,7 +5,8 @@ import userSlice from './userSlice';
 
 const persistConfig = {
   key: 'root',
-  user: AsyncStorage,
+  storage: AsyncStorage,
+  whitelist: ['user'],
 };
 
 let rootReducer = combineReducers({
