@@ -19,15 +19,27 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 
 import MainStack from './src/navigation/MainStack';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store} from './src/redux/store';
+import persistStore from 'redux-persist/es/persistStore';
+
+let persistor = persistStore(store);
 
 function App() {
+  let user = undefined;
+
   return (
-    <NavigationContainer>
-      <SafeAreaView>
-        <StatusBar backgroundColor={'black'} />
-      </SafeAreaView>
-      <MainStack />
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <SafeAreaView>
+            <StatusBar backgroundColor={'black'} />
+          </SafeAreaView>
+          <MainStack />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 

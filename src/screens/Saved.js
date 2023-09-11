@@ -6,13 +6,34 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 import SmallCardWithIcon from '../components/SmallCardWithIcon';
+import {BASE_URL} from '../constants/baseurl';
+import axios from 'axios';
 
 const Saved = () => {
+  // state
+  const [allCategories, setAllCategories] = useState([]);
+
   const category = ['For You', 'Education', 'Technology', 'Entertainment'];
+
+  // get all Categories
+  const getAllCategories = () => {
+    axios
+      .get(`${BASE_URL}/blog/all/category`)
+      .then(res => {
+        setAllCategories(res?.data?.allCategory);
+      })
+      .catch(err => {
+        console.log('error ==>', err);
+      });
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
 
   const data = [
     {
@@ -62,7 +83,7 @@ const Saved = () => {
       <View className="mt-5 flex flex-row items-center gap-x-2 ">
         <Image source={images.AddLogo} className="w-5 h-5" />
         <FlatList
-          data={category}
+          data={allCategories}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
           renderItem={({item}) => {
@@ -70,7 +91,7 @@ const Saved = () => {
               <View
                 className=" px-2 py-1 rounded-full text-xs mr-2"
                 style={{backgroundColor: color.colorPrimary}}>
-                <Text className="text-white">{item}</Text>
+                <Text className="text-white capitalize">{item.name}</Text>
               </View>
             );
           }}

@@ -16,12 +16,16 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
 import {timeAgo} from '../constants/timeago';
+import {useSelector} from 'react-redux';
 
 const Home = () => {
   // states
   const [refreshing, setRefreshing] = React.useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+
+  const state = useSelector(state => state);
+  console.log('state ==>', state);
 
   // navigation
   const navigation = useNavigation();
@@ -96,7 +100,6 @@ const Home = () => {
     }, 2000);
   }, []);
 
-  console.log('time ==> ', allCategories);
   return (
     <ScrollView
       className="flex-1 "
@@ -120,7 +123,7 @@ const Home = () => {
               <View
                 className=" px-2 py-1 rounded-full text-xs mr-2"
                 style={{backgroundColor: color.colorPrimary}}>
-                <Text className="text-white">{item.name}</Text>
+                <Text className="text-white capitalize">{item.name}</Text>
               </View>
             );
           }}

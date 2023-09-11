@@ -14,16 +14,26 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import InputField from '../components/Input';
 import PillButton from '../components/PillButton';
 import {images} from '../images';
+import axios from 'axios';
+import {BASE_URL} from '../constants/baseurl';
+import {setUser} from '../redux/userSlice';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Login = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const state = useSelector(state => state.userSlice);
+  console.log('state ==>', state);
+
+  const [loading, setloading] = useState(false);
 
   const SignInSchema = Yup.object().shape({
     email: Yup.string()
@@ -38,34 +48,22 @@ const Login = () => {
       .min(6, 'Password must be 6 character long'),
   });
 
-  const signIn = async value => {
-    setTimeout(() => {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'HomeStack'}],
+  const signIn = value => {
+    // console.log('values123 ==>', value);
+    setloading(true);
+    axios
+      .post(`${BASE_URL}/user/login/asdasdq213dq14qr`, value)
+      .then(res => {
+        console.log('res ==>', res?.data);
+        dispatch(setUser(res.data));
+        navigation.navigate('HomeStack');
+      })
+      .catch(error => {
+        console.log('error ==>', error);
+      })
+      .finally(() => {
+        setloading(false);
       });
-    }, 2000);
-    // dispatch(setLoader(true));
-    // const fcmToken = await AsyncStorage.getItem('fcmToken');
-    // let payload = {
-    //   email: value.email,
-    //   password: value.password,
-    //   deviceToken: fcmToken ? fcmToken : '1234567890',
-    //   deviceType: Platform.OS,
-    // };
-    // apiRequest
-    //   .post(endPoints.login, payload)
-    //   .then(res => {
-    //     dispatch(setLoader(false));
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     dispatch(setLoader(false));
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: err.data.message,
-    //     });
-    //   });
   };
 
   return (
@@ -83,8 +81,8 @@ const Login = () => {
 
             <Formik
               initialValues={{
-                email: 'abc@gmail.com',
-                password: '12345678',
+                email: 'user@gmai.com',
+                password: 'password',
               }}
               onSubmit={value => {
                 signIn(value);
@@ -110,6 +108,9 @@ const Login = () => {
                       marginTailwind="my-3"
                       paddingTailwind="px-3"
                     />
+                    {errors?.email && touched?.email && (
+                      <Text className="text-red-700">{errors?.email}</Text>
+                    )}
 
                     <InputField
                       placeholder="Password"
@@ -121,8 +122,16 @@ const Login = () => {
                       marginTailwind="my-3 "
                       paddingTailwind="px-3"
                     />
+                    {errors?.password && touched?.password && (
+                      <Text className="text-red-700">{errors?.password}</Text>
+                    )}
 
-                    <PillButton name={'Login'} marginTailwind="mt-3" />
+                    <PillButton
+                      loading={loading}
+                      name={'Login'}
+                      marginTailwind="mt-3"
+                      onPress={handleSubmit}
+                    />
                     <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">
                       <View className="border border-[#ddd] w-6/12 h-0"></View>
                       <Text className="text-center uppercase my-2">or</Text>
@@ -131,7 +140,7 @@ const Login = () => {
 
                     <Pressable onPress={() => navigation.navigate('Home')}>
                       <Text className="text-center underline text-sm mt-5">
-                        Create Account
+                        Create An Account
                       </Text>
                     </Pressable>
                   </View>
