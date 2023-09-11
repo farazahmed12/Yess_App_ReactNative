@@ -32,7 +32,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const state = useSelector(state => state.userSlice);
-  console.log('state ==>', state);
 
   const [loading, setloading] = useState(false);
 
@@ -59,7 +58,7 @@ const Login = () => {
         Toast.show({
           type: 'success',
           text1: 'Login Successfully',
-          onHide: () => navigation.navigate('HomeStack'),
+          onHide: () => navigation.navigate('DrawerStack'),
         });
       })
       .catch(error => {
@@ -75,6 +74,8 @@ const Login = () => {
         setloading(false);
       });
   };
+
+  console.log('statesdasd ==>', state);
 
   return (
     <View className="flex-1 ">

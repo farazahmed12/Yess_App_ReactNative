@@ -29,6 +29,8 @@ const BlogDetails = ({route}) => {
   // data
   const data = route.params.item || [];
 
+  console.log('data ====>', data);
+
   // const data = {
   //   success: true,
   //   updatedBlog: {

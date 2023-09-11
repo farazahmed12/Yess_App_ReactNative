@@ -10,4 +10,5 @@ export const images = {
   AngleLeft: require('./angle-left.png'),
   ShieldLogo: require('./shield.png'),
   StarLogo: require('./star.png'),
+  CrossLogo: require('./close.png'),
 };

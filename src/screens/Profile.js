@@ -10,6 +10,8 @@ import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 import SmallCardWithIcon from '../components/SmallCardWithIcon';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 const Profile = () => {
   const [tab, setTab] = React.useState('saved');
@@ -34,10 +36,18 @@ const Profile = () => {
     },
   ];
 
+  // navigation
+  const navigation = useNavigation();
+  console.log('open ==>', navigation);
+
   return (
     <View className="flex-1 px-4 mt-5">
       <View className="flex flex-row justify-end">
-        <Image source={images.MenuLogo} className="w-5 h-5" />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.openDrawer()}>
+          <Image source={images.MenuLogo} className="w-5 h-5" />
+        </TouchableOpacity>
       </View>
       {/* Profile Image */}
       <View className="flex justify-center items-center mt-1">

@@ -24,6 +24,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store} from './src/redux/store';
 import persistStore from 'redux-persist/es/persistStore';
 import Toast from 'react-native-toast-message';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 let persistor = persistStore(store);
 
@@ -31,17 +32,19 @@ function App() {
   let user = undefined;
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <SafeAreaView>
-            <StatusBar backgroundColor={'black'} />
-          </SafeAreaView>
-          <MainStack />
-          <Toast />
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <NavigationContainer>
+            <SafeAreaView>
+              <StatusBar backgroundColor={'black'} />
+            </SafeAreaView>
+            <MainStack />
+            <Toast />
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
 

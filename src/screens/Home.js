@@ -136,7 +136,7 @@ const Home = () => {
           ListFooterComponent={() => <View className="mb-14" />}
           renderItem={({item}) => {
             const timeAgoBlog = timeAgo(item.createdAt);
-            console.log('item ==>', item);
+            // console.log('item ==>', item);
             return (
               <Card
                 category={'Tech'}

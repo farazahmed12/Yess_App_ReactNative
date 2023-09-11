@@ -3,12 +3,19 @@ import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 
-const Card = ({category, title, time, onPress, src}) => {
+const Card = ({
+  category,
+  title,
+  time,
+  onPress,
+  src,
+  marginTailwind = 'mx-4 my-2',
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
-      className="shadow-md flex flex-row  rounded-lg mx-4 my-2 bg-gray-100">
+      className={`shadow-md flex flex-row  rounded-lg ${marginTailwind} bg-gray-100`}>
       <Image
         source={{uri: src}}
         className="w-24 h-28 mr-3 object-cover rounded-l-lg"
