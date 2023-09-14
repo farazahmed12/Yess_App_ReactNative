@@ -130,7 +130,7 @@ const Search = () => {
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
               const timeAgoBlog = timeAgo(item.createdAt);
-              // console.log('item ==>', item);
+
               return (
                 <Card
                   category={'Tech'}

@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Banner from '../components/Banner';
@@ -24,9 +25,10 @@ const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
-
-  const state = useSelector(state => state);
-  console.log('state ==>', state);
+  const [pageNumber, setPageNumber] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setloading] = useState(false);
+  const {user} = useSelector(state => state.user.user);
 
   // navigation
   const navigation = useNavigation();
@@ -46,6 +48,7 @@ const Home = () => {
       .get(`${BASE_URL}/blog/all/blogs`)
       .then(res => {
         setAllBlogs(res?.data?.data);
+        setTotalPages(res?.data?.totalPages);
       })
       .catch(err => {
         console.log('error ==>', err);
@@ -73,10 +76,51 @@ const Home = () => {
     setRefreshing(true);
     getAllBlogs();
     getAllCategories();
+    setPageNumber(2);
+    setPageNumber(1);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  // get Pagenation data
+  const getData = () => {
+    setloading(true);
+    axios
+      .get(`${BASE_URL}/blog/all/blogs?page=${pageNumber}`)
+      .then(res => {
+        setAllBlogs([...allBlogs, ...res?.data?.data]);
+        setPageNumber(pageNumber + 1);
+      })
+      .catch(err => {
+        console.log('error ==>', err);
+      })
+      .finally(() => {
+        setloading(false);
+      });
+  };
+
+  // flatlist footer
+  const renderFooter = () => {
+    if (totalPages < pageNumber) {
+      return <View className="mb-20" />;
+    } else {
+      return (
+        <View className="px-4 mb-20 mt-3 ">
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={getData}
+            style={{backgroundColor: color.colorPrimary}}
+            className=" w-full flex flex-row rounded-md justify-center items-center py-2">
+            <Text className="text-white text-md font-semibold">Load More</Text>
+            {loading ? (
+              <ActivityIndicator color="white" style={{marginLeft: 8}} />
+            ) : null}
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   return (
     <ScrollView
@@ -116,10 +160,11 @@ const Home = () => {
       <View className="mt-3">
         <FlatList
           data={allBlogs}
-          ListFooterComponent={() => <View className="mb-14" />}
+          ListFooterComponent={renderFooter}
           renderItem={({item}) => {
             const timeAgoBlog = timeAgo(item.createdAt);
 
+            const saved = user.savedBloged.includes(x => x == item._id);
             return (
               <Card
                 categories={item.categories}
@@ -127,6 +172,7 @@ const Home = () => {
                 time={timeAgoBlog}
                 src={item.featureImg}
                 onPress={() => navigation.navigate('BlogDetails', {item})}
+                saved={saved}
               />
             );
           }}

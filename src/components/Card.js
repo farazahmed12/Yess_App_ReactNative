@@ -3,6 +3,7 @@ import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 import {FlatList} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 const Card = ({
   categories,
@@ -11,8 +12,10 @@ const Card = ({
   onPress,
   src,
   className = 'mx-4 my-2',
+  saved = false,
 }) => {
-  console.log('categories', categories);
+  // navigation
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -39,7 +42,21 @@ const Card = ({
         />
 
         <Text className="font-bold text-md text-black  flex ">{title}</Text>
-        <Text className="text-gray-500 text-xs my-2 font-semibold">{time}</Text>
+        <View className="flex flex-row justify-between my-2 mr-2 items-center">
+          <Text className="text-gray-500 text-xs  font-semibold">{time}</Text>
+          {saved == true ? (
+            <TouchableOpacity className="px-4 pt-2 ">
+              <Image source={images.StarFill} className="w-4 h-4 " />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('Saved')}
+              className="px-4 pt-2 ">
+              <Image source={images.StarEmpty} className="w-4 h-4 " />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );
