@@ -93,7 +93,7 @@ function CustomDrawerContent(props) {
             }
             data={drawerItems}
             renderItem={({item, index}) => {
-              console.log('props ==>', props.navigation);
+              // console.log('props ==>', props.navigation);
               return (
                 <TouchableOpacity
                   onPress={() => props.navigation.navigate(`${item}`)}

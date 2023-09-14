@@ -12,12 +12,25 @@ import color from '../constants/color';
 import SmallCardWithIcon from '../components/SmallCardWithIcon';
 import {BASE_URL} from '../constants/baseurl';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
+import {timeAgo} from '../constants/timeago';
+import Card from '../components/Card';
+import {useNavigation} from '@react-navigation/native';
 
 const Saved = () => {
   // state
   const [allCategories, setAllCategories] = useState([]);
+  const [allSaved, setAllSaved] = useState([]);
+  const user = useSelector(state => state.user.user);
 
-  const category = ['For You', 'Education', 'Technology', 'Entertainment'];
+  // navigation
+  const navigation = useNavigation();
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
 
   // get all Categories
   const getAllCategories = () => {
@@ -31,8 +44,22 @@ const Saved = () => {
       });
   };
 
+  // get all Saved
+  const getAllSaved = () => {
+    axios
+      .get(`${BASE_URL}/user/saved/blogs`, config)
+      .then(res => {
+        // console.log('res ==>', res.data);
+        setAllSaved(res?.data);
+      })
+      .catch(error => {
+        console.log('error =+>', error);
+      });
+  };
+
   useEffect(() => {
     getAllCategories();
+    getAllSaved();
   }, []);
 
   const data = [
@@ -74,14 +101,14 @@ const Saved = () => {
     },
   ];
   return (
-    <ScrollView className="flex-1 px-4 " showsVerticalScrollIndicator={false}>
-      <View className="flex flex-row justify-between mt-3 mb-1">
+    <ScrollView className="flex-1  " showsVerticalScrollIndicator={false}>
+      <View className="flex flex-row justify-between mt-3 mb-1 px-4">
         <Text className="font-bold text-lg">Yes App</Text>
-        <Image source={images.BellLogo} className="w-5 h-5" />
+        {/* <Image source={images.BellLogo} className="w-5 h-5" /> */}
       </View>
 
-      <View className="mt-5 flex flex-row items-center gap-x-2 ">
-        <Image source={images.AddLogo} className="w-5 h-5" />
+      <View className="mt-5 flex flex-row items-center gap-x-2 px-4 ">
+        {/* Category */}
         <FlatList
           data={allCategories}
           showsHorizontalScrollIndicator={false}
@@ -98,23 +125,26 @@ const Saved = () => {
         />
       </View>
 
-      <FlatList
-        data={data}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => {
-          return (
-            <SmallCardWithIcon
-              title={item.title}
-              category={item.category}
-              time={item.time}
-              isIcon={true}
-              iconSrc={images.AddLogo}
-              imgSrc={item.img}
-            />
-          );
-        }}
-        ListFooterComponent={() => <View className="mb-14" />}
-      />
+      {/* All Saved */}
+      <View className=" mt-3 flex items-center  ">
+        <FlatList
+          data={allSaved}
+          ListFooterComponent={() => <View className="mb-14" />}
+          renderItem={({item}) => {
+            const timeAgoBlog = timeAgo(item.createdAt);
+            return (
+              <Card
+                categories={item.categories}
+                title={item.title}
+                time={timeAgoBlog}
+                src={item.featureImg}
+                className=" mx-0 my-3 self-center  w-12/13"
+                onPress={() => navigation.navigate('BlogDetails', {item})}
+              />
+            );
+          }}
+        />
+      </View>
     </ScrollView>
   );
 };

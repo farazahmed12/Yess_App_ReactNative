@@ -29,55 +29,6 @@ const BlogDetails = ({route}) => {
   // data
   const data = route.params.item || [];
 
-  console.log('data ====>', data);
-
-  // const data = {
-  //   success: true,
-  //   updatedBlog: {
-  //     _id: '64fb8101d17d1f0eda90bd1b',
-  //     adminId: '64f3071086f8e7bdbb1a7fb4',
-  //     data: [
-  //       {
-  //         ctype: 'image',
-  //         content:
-  //           'http://res.cloudinary.com/dzvtmtsgj/image/upload/v1694204160/24-Karat/nualphthacoo49mdysi6.jpg',
-  //         _id: '64fb8101d17d1f0eda90bd1c',
-  //       },
-  //       {
-  //         ctype: 'heading',
-  //         content: 'Multiple of the Same Screen',
-  //         _id: '64fb8101d17d1f0eda90bd1d',
-  //       },
-  //       {
-  //         ctype: 'text',
-  //         content:
-  //           'There’s more, so much more, that is part of React Navigation. In fact, I got this far into this blog post and realized I still had way too much to cover in order to toss everything in here',
-  //         _id: '64fb8101d17d1f0eda90bd1e',
-  //       },
-  //       {
-  //         ctype: 'image',
-  //         content:
-  //           'http://res.cloudinary.com/dzvtmtsgj/image/upload/v1694204160/24-Karat/nualphthacoo49mdysi6.jpg',
-  //         _id: '64fb8101d17d1f0eda90bd1c',
-  //       },
-  //       {
-  //         ctype: 'heading',
-  //         content: 'Multiple of the Same Screen',
-  //         _id: '64fb8101d17d1f0eda90bd1d',
-  //       },
-  //       {
-  //         ctype: 'text',
-  //         content:
-  //           'There’s more, so much more, that is part of React Navigation. In fact, I got this far into this blog post and realized I still had way too much to cover in order to toss everything in here',
-  //         _id: '64fb8101d17d1f0eda90bd1e',
-  //       },
-  //     ],
-  //     createdAt: '2023-09-08T20:16:01.001Z',
-  //     updatedAt: '2023-09-08T20:48:33.426Z',
-  //     __v: 0,
-  //     views: 1,
-  //   },
-  // };
   return (
     <ScrollView className="px-4 flex-1 mt-2">
       <ImageBackground

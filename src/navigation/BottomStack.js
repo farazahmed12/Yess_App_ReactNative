@@ -77,13 +77,13 @@ const BottomStack = () => {
           tabBarIcon: BottomTabComponent('Saved', images.StarLogo),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
           tabBarIcon: BottomTabComponent('Profile', images.UserLogo),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

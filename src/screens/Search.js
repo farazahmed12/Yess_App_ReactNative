@@ -137,7 +137,7 @@ const Search = () => {
                   title={item.title}
                   time={timeAgoBlog}
                   src={item.featureImg}
-                  marginTailwind="mx-0 my-2"
+                  className="mx-0 my-2"
                   onPress={() => navigation.navigate('BlogDetails', {item})}
                 />
               );
