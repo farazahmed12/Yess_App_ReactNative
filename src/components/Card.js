@@ -19,7 +19,6 @@ const Card = ({
   const navigation = useNavigation();
 
   return (
-    // <View></View>
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
@@ -36,7 +35,7 @@ const Card = ({
           renderItem={({item}) => {
             return (
               <Text
-                className={`font-bold text-xs underline`}
+                className={`font-bold text-xs underline mr-1`}
                 style={{color: color.colorPrimary}}>
                 {item.name}
               </Text>

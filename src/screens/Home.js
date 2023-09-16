@@ -159,7 +159,6 @@ const Home = () => {
   };
 
   // handle saved
-
   const _handleSaved = (id, index) => {
     let tempData = [...allBlogs];
     if (tempData[index].isSaved) {
@@ -188,6 +187,17 @@ const Home = () => {
       });
   };
 
+  // handle All category
+  const headerAllCategory = () => {
+    return (
+      <TouchableOpacity
+        className=" px-3 py-1 rounded-full text-xs mr-2"
+        style={{backgroundColor: color.colorPrimary}}>
+        <Text className="text-white  uppercase">all</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScrollView
       className="flex-1 "
@@ -206,8 +216,8 @@ const Home = () => {
       <Banner data={imgData} />
 
       <View className="mt-5 flex flex-row items-center gap-x-2 px-4">
-        <Image source={images.AddLogo} className="w-5 h-5" />
         <FlatList
+          ListHeaderComponent={headerAllCategory}
           data={allCategories}
           showsHorizontalScrollIndicator={false}
           horizontal={true}

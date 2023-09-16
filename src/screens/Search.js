@@ -57,12 +57,15 @@ const Search = () => {
     axios
       .get(`${BASE_URL}/blog/search/blog/${query}`)
       .then(res => {
+        console.log('res=====>', res.data);
         setAllBlogs(res?.data?.blog);
       })
       .catch(error => {
         Toast.show({
           type: 'error',
           text1: 'Error While Searching For Blog ',
+          visibilityTime: 1000,
+          autoHide,
         });
       });
   };
