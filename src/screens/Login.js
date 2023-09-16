@@ -13,8 +13,9 @@ import {
   Text,
   TextInput,
   View,
+  Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -26,6 +27,7 @@ import {BASE_URL} from '../constants/baseurl';
 import {setUser} from '../redux/userSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import messaging from '@react-native-firebase/messaging';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -75,8 +77,6 @@ const Login = () => {
       });
   };
 
-  console.log('statesdasd ==>', state);
-
   return (
     <View className="flex-1 ">
       <ScrollView
@@ -92,8 +92,8 @@ const Login = () => {
 
             <Formik
               initialValues={{
-                email: 'user@gmai.com',
-                password: 'password',
+                email: '',
+                password: '',
               }}
               onSubmit={value => {
                 signIn(value);

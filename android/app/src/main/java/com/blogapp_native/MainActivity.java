@@ -1,4 +1,4 @@
-package com.blogapp_native;
+package com.yess.geeks;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

@@ -28,7 +28,15 @@ const Home = () => {
   const [pageNumber, setPageNumber] = useState(2);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setloading] = useState(false);
-  const {user} = useSelector(state => state.user.user);
+  const [allSaved, setallSaved] = useState([]);
+  const user = useSelector(state => state.user.user);
+
+  // config
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
 
   // navigation
   const navigation = useNavigation();
@@ -42,12 +50,32 @@ const Home = () => {
     'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
   ];
 
+  // get all saved
+  const getAllSaved = () => {
+    axios
+      .get(`${BASE_URL}/user/saved/blogs`, config)
+      .then(res => {
+        setAllBlogs(res.data);
+      })
+      .catch(error => {
+        console.log('error');
+      });
+  };
+
   // get all blogs
   const getAllBlogs = () => {
     axios
       .get(`${BASE_URL}/blog/all/blogs`)
       .then(res => {
-        setAllBlogs(res?.data?.data);
+        const fillArr = res.data.data.map(item => {
+          return {
+            ...item,
+            isSaved:
+              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+          };
+        });
+        setAllBlogs(fillArr);
+
         setTotalPages(res?.data?.totalPages);
       })
       .catch(err => {
@@ -68,6 +96,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getAllSaved();
     getAllBlogs();
     getAllCategories();
   }, []);
@@ -89,8 +118,15 @@ const Home = () => {
     axios
       .get(`${BASE_URL}/blog/all/blogs?page=${pageNumber}`)
       .then(res => {
-        setAllBlogs([...allBlogs, ...res?.data?.data]);
         setPageNumber(pageNumber + 1);
+        const fillArr = res.data.data.map(item => {
+          return {
+            ...item,
+            isSaved:
+              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+          };
+        });
+        setAllBlogs([...allBlogs, ...fillArr]);
       })
       .catch(err => {
         console.log('error ==>', err);
@@ -120,6 +156,36 @@ const Home = () => {
         </View>
       );
     }
+  };
+
+  // handle saved
+
+  const _handleSaved = (id, index) => {
+    let tempData = [...allBlogs];
+    if (tempData[index].isSaved) {
+      tempData[index].isSaved = false;
+    } else {
+      tempData[index].isSaved = true;
+    }
+    setAllBlogs(tempData);
+
+    let data = {
+      savedBlog: id,
+    };
+
+    axios
+      .post(`${BASE_URL}/user/saved/blog`, data, config)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+        let tempData = [...allBlogs];
+        if (tempData[index].isSaved == false) {
+          tempData[index].isSaved = true;
+        } else {
+          tempData[index].isSaved = false;
+        }
+        setAllBlogs(tempData);
+      });
   };
 
   return (
@@ -161,18 +227,20 @@ const Home = () => {
         <FlatList
           data={allBlogs}
           ListFooterComponent={renderFooter}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             const timeAgoBlog = timeAgo(item.createdAt);
 
-            const saved = user.savedBloged.includes(x => x == item._id);
             return (
               <Card
                 categories={item.categories}
                 title={item.title}
                 time={timeAgoBlog}
                 src={item.featureImg}
-                onPress={() => navigation.navigate('BlogDetails', {item})}
-                saved={saved}
+                onPress={() =>
+                  navigation.navigate('BlogDetails', {data: item._id})
+                }
+                saved={item.isSaved}
+                savedOnPress={() => _handleSaved(item._id, index)}
               />
             );
           }}

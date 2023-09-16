@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -9,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 import TextBox from '../components/TextBox';
@@ -21,13 +22,42 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {timeAgo} from '../constants/timeago';
+import axios from 'axios';
+import {BASE_URL} from '../constants/baseurl';
+import {useDispatch} from 'react-redux';
+import {setLoader} from '../redux/globalState';
 
 const BlogDetails = ({route}) => {
   // navigation
   const navigation = useNavigation();
 
+  // state
+  const [data, setData] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
   // data
-  const data = route.params.item || [];
+  const id = route.params.data;
+  console.log('=========>', id);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${BASE_URL}/blog/one/blogs/${id}`)
+      .then(res => {
+        setData(res?.data?.updatedBlog);
+      })
+      .catch(error => {
+        console.log('error', error);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <ActivityIndicator className="mt-20" size={'large'} animating={true} />
+    );
+  }
 
   return (
     <ScrollView className="px-4 flex-1 mt-2">
@@ -36,7 +66,7 @@ const BlogDetails = ({route}) => {
           uri: data.featureImg,
         }}
         className="w-full h-44 rounded-2xl overflow-hidden ">
-        <View className="flex flex-row justify-between">
+        {/* <View className="flex flex-row justify-between">
           <TouchableOpacity
             activeOpacity={0.7}
             style={{backgroundColor: color.colorPrimary}}
@@ -50,7 +80,7 @@ const BlogDetails = ({route}) => {
               }}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ImageBackground>
 
       <View className="flex ">
@@ -58,14 +88,23 @@ const BlogDetails = ({route}) => {
           {data.title}
         </Text>
         <View className="flex flex-row items-center my-4 gap-x-3">
-          <Text
-            style={{borderColor: color.colorPrimary, color: color.colorPrimary}}
-            className={`border-2 px-4  rounded-3xl text-sm`}>
-            {data?.categories}
-          </Text>
-          <Text style={{color: color.colorPrimary}} className={`text-sm `}>
+          <FlatList
+            data={data.categories}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => {
+              return (
+                <Text
+                  className={`font-bold text-xs underline mx-2`}
+                  style={{color: color.colorPrimary}}>
+                  {item.name}
+                </Text>
+              );
+            }}
+          />
+          {/* <Text style={{color: color.colorPrimary}} className={`text-sm `}>
             {timeAgo(data.createdAt)}
-          </Text>
+          </Text> */}
         </View>
         <FlatList
           data={data?.data}

@@ -62,7 +62,6 @@ const Register = () => {
     axios
       .post(`${BASE_URL}/user/create/user`, value)
       .then(res => {
-        dispatch(setUser(res.data));
         Toast.show({
           type: 'success',
           text1: 'User Registered Successfully',
@@ -95,11 +94,11 @@ const Register = () => {
 
             <Formik
               initialValues={{
-                user_name: 'user@123',
-                email: 'user@gmai.com',
-                name: 'user',
-                password: 'password',
-                phone_number: '0300012401',
+                user_name: '',
+                email: '',
+                name: '',
+                password: '',
+                phone_number: '',
                 devicetoken: 'asdasdq213dq14qr',
               }}
               onSubmit={value => {

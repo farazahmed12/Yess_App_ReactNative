@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   SafeAreaView,
@@ -19,16 +19,26 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 
 import MainStack from './src/navigation/MainStack';
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store} from './src/redux/store';
 import persistStore from 'redux-persist/es/persistStore';
 import Toast from 'react-native-toast-message';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import Loader from './src/components/Loader';
+import {
+  notificationListner,
+  requestUserNotificationPermission,
+} from './src/utils/notificationHelper';
 
 let persistor = persistStore(store);
 
 function App() {
+  useEffect(() => {
+    requestUserNotificationPermission();
+    // notificationListner();
+  }, []);
+
   let user = undefined;
 
   return (

@@ -5,6 +5,7 @@ import {
   View,
   Image,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {images} from '../images';
@@ -22,6 +23,7 @@ const Saved = () => {
   const [allCategories, setAllCategories] = useState([]);
   const [allSaved, setAllSaved] = useState([]);
   const user = useSelector(state => state.user.user);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   // navigation
   const navigation = useNavigation();
@@ -49,7 +51,7 @@ const Saved = () => {
     axios
       .get(`${BASE_URL}/user/saved/blogs`, config)
       .then(res => {
-        // console.log('res ==>', res.data);
+        console.log('res ==>', res.data);
         setAllSaved(res?.data);
       })
       .catch(error => {
@@ -62,8 +64,21 @@ const Saved = () => {
     getAllSaved();
   }, []);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getAllSaved();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <ScrollView className="flex-1  " showsVerticalScrollIndicator={false}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      className="flex-1  "
+      showsVerticalScrollIndicator={false}>
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
         <Text className="font-bold text-lg">Yes App</Text>
         {/* <Image source={images.BellLogo} className="w-5 h-5" /> */}

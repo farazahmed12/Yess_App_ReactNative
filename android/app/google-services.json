@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "677739011414",
+    "project_id": "yess-73871",
+    "storage_bucket": "yess-73871.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677739011414:android:2a6c03fdb876a5dccb0af7",
+        "android_client_info": {
+          "package_name": "com.yess.geeks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHEYzEWHUj04RFOSluqGmXWNJN6FDcazs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

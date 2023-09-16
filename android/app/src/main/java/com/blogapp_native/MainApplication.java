@@ -1,4 +1,4 @@
-package com.blogapp_native;
+package com.yess.geeks;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

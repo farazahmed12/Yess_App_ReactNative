@@ -13,4 +13,6 @@ export const images = {
   CrossLogo: require('./close.png'),
   StarEmpty: require('./star_empty.png'),
   StarFill: require('./star_fill.png'),
+  HeartFill: require('./heart_fill.png'),
+  HeartEmpty: require('./heart_empty.png'),
 };

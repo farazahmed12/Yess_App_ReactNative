@@ -13,10 +13,13 @@ const Card = ({
   src,
   className = 'mx-4 my-2',
   saved = false,
+  savedOnPress,
 }) => {
   // navigation
   const navigation = useNavigation();
+
   return (
+    // <View></View>
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
@@ -35,7 +38,7 @@ const Card = ({
               <Text
                 className={`font-bold text-xs underline`}
                 style={{color: color.colorPrimary}}>
-                {item}
+                {item.name}
               </Text>
             );
           }}
@@ -45,15 +48,15 @@ const Card = ({
         <View className="flex flex-row justify-between my-2 mr-2 items-center">
           <Text className="text-gray-500 text-xs  font-semibold">{time}</Text>
           {saved == true ? (
-            <TouchableOpacity className="px-4 pt-2 ">
-              <Image source={images.StarFill} className="w-4 h-4 " />
+            <TouchableOpacity className="px-4 pt-2 " onPress={savedOnPress}>
+              <Image source={images.HeartFill} className="w-4 h-4 " />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
+              onPress={savedOnPress}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Saved')}
               className="px-4 pt-2 ">
-              <Image source={images.StarEmpty} className="w-4 h-4 " />
+              <Image source={images.HeartEmpty} className="w-4 h-4 " />
             </TouchableOpacity>
           )}
         </View>
