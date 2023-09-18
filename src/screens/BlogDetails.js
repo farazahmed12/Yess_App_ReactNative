@@ -39,7 +39,6 @@ const BlogDetails = ({route}) => {
 
   // data
   const id = route.params.data;
-  console.log('=========>', id);
 
   useEffect(() => {
     setLoading(true);
@@ -53,6 +52,8 @@ const BlogDetails = ({route}) => {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  console.log('data ==>', data);
 
   if (loading) {
     return (
@@ -110,9 +111,18 @@ const BlogDetails = ({route}) => {
               );
             }}
           />
-          <Text style={{color: color.colorPrimary}} className={`text-sm `}>
-            {timeAgo(data.createdAt)}
-          </Text>
+          <View className="flex justify-end">
+            <Text
+              style={{color: color.colorPrimary}}
+              className={`text-xs capitalize`}>
+              Published: {timeAgo(data.createdAt)}
+            </Text>
+            <Text
+              style={{color: color.colorPrimary}}
+              className={`text-xs capitalize`}>
+              View: {data?.views}
+            </Text>
+          </View>
         </View>
         <FlatList
           data={data?.data}

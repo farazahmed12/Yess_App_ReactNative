@@ -103,14 +103,16 @@ const Home = () => {
   }, []);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    getAllBlogs();
-    getAllCategories();
-    setPageNumber(2);
-    setPageNumber(1);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    if (selCategory == 'ALL') {
+      setRefreshing(true);
+      getAllBlogs();
+      getAllCategories();
+      setPageNumber(2);
+      setPageNumber(1);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }
   }, []);
 
   // get Pagenation data
@@ -139,7 +141,7 @@ const Home = () => {
 
   // flatlist footer
   const renderFooter = () => {
-    if (totalPages < pageNumber) {
+    if (totalPages < pageNumber && selCategory != 'ALL') {
       return <View className="mb-20" />;
     } else {
       return (
@@ -192,7 +194,10 @@ const Home = () => {
   const headerAllCategory = () => {
     return (
       <TouchableOpacity
-        onPress={() => setSelCategory('ALL')}
+        onPress={() => {
+          setSelCategory('ALL');
+          getAllBlogs();
+        }}
         activeOpacity={0.7}
         className={` ${
           selCategory == 'ALL' ? 'opacity-100' : 'opacity-70'
@@ -201,6 +206,26 @@ const Home = () => {
         <Text className="text-white  uppercase">all</Text>
       </TouchableOpacity>
     );
+  };
+
+  // handle category select
+  const _handleCatSelect = (name, id) => {
+    setSelCategory(name);
+    axios
+      .get(`${BASE_URL}/blog/search/blog/category/${id}`)
+      .then(res => {
+        const newArr = res?.data?.blog?.map(item => {
+          return {
+            ...item,
+            isSaved:
+              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+          };
+        });
+        setAllBlogs(newArr);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
@@ -230,7 +255,7 @@ const Home = () => {
             return (
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => setSelCategory(item.name)}
+                onPress={() => _handleCatSelect(item.name, item._id)}
                 className={` px-2 py-1 rounded-full text-xs mr-2 ${
                   item.name == selCategory ? 'opacity-100' : 'opacity-70'
                 } `}
