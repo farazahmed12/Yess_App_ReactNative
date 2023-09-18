@@ -2,6 +2,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   Image,
@@ -50,13 +51,27 @@ const Login = () => {
       .min(6, 'Password must be 6 character long'),
   });
 
-  const signIn = value => {
+  const signIn = async value => {
     setloading(true);
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
     axios
       .post(`${BASE_URL}/user/login/user`, value)
       .then(res => {
-        // console.log('res ==>', res?.data);
+        console.log('res ==>', res?.data?.user?.devicetoken);
         dispatch(setUser(res.data));
+        if (res?.data?.user?.devicetoken != fcmToken) {
+          axios
+            .put(`${BASE_URL}/user/update/${res?.data?.user?._id}`, {
+              devicetoken: fcmToken,
+            })
+            .then(res => {
+              console.log('res ===>', res);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+
         Toast.show({
           type: 'success',
           text1: 'Login Successfully',
