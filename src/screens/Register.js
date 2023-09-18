@@ -57,16 +57,53 @@ const Register = () => {
       .min(6, 'Password must be 6 character long'),
   });
 
-  const signIn = value => {
+  let fcmToken = '';
+  const getFCMToken = async () => {
+    fcmToken = await AsyncStorage.getItem('fcmToken');
+  };
+  getFCMToken();
+
+  const signIn = async value => {
     setloading(true);
     axios
       .post(`${BASE_URL}/user/create/user`, value)
       .then(res => {
-        Toast.show({
-          type: 'success',
-          text1: 'User Registered Successfully',
-          onHide: () => navigation.navigate('Login'),
-        });
+        axios
+          .post(`${BASE_URL}/user/login/user`, {
+            email: value.email,
+            password: value.password,
+          })
+          .then(res => {
+            console.log('res ==>', res?.data?.user?.devicetoken);
+            dispatch(setUser(res.data));
+            if (res?.data?.user?.devicetoken != fcmToken) {
+              axios
+                .put(`${BASE_URL}/user/update/${res?.data?.user?._id}`, {
+                  devicetoken: fcmToken,
+                })
+                .then(res => {
+                  console.log('res ===>', res);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+
+            Toast.show({
+              type: 'success',
+              text1: 'User Registered Successfully',
+              onHide: () => navigation.navigate('DrawerStack'),
+            });
+          })
+          .catch(error => {
+            // console.log('error ==>', error);
+            Toast.show({
+              type: 'error',
+              text1: 'Error While Logging In',
+              autoHide: true,
+              visibilityTime: 1000,
+            });
+          });
       })
       .catch(error => {
         Toast.show({
@@ -99,7 +136,7 @@ const Register = () => {
                 name: '',
                 password: '',
                 phone_number: '',
-                devicetoken: 'asdasdq213dq14qr',
+                devicetoken: fcmToken,
               }}
               onSubmit={value => {
                 signIn(value);
