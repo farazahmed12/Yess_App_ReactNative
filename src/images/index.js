@@ -15,4 +15,6 @@ export const images = {
   StarFill: require('./star_fill.png'),
   HeartFill: require('./heart_fill.png'),
   HeartEmpty: require('./heart_empty.png'),
+  EyeClose: require('./eyeClose.png'),
+  EyeOpen: require('./eyeOpen.png'),
 };

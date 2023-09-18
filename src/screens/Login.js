@@ -35,7 +35,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const state = useSelector(state => state.userSlice);
-
+  const [showPassword, setshowPassword] = useState(false);
   const [loading, setloading] = useState(false);
 
   const SignInSchema = Yup.object().shape({
@@ -125,6 +125,7 @@ const Login = () => {
               }) => {
                 return (
                   <View className="w-full">
+                    {/* email */}
                     <InputField
                       placeholder="Email Address"
                       value={values.email}
@@ -137,7 +138,7 @@ const Login = () => {
                     {errors?.email && touched?.email && (
                       <Text className="text-red-700">{errors?.email}</Text>
                     )}
-
+                    {/* password */}
                     <InputField
                       placeholder="Password"
                       value={values.password}
@@ -147,6 +148,9 @@ const Login = () => {
                       secureTextEntry={true}
                       marginTailwind="my-3 "
                       paddingTailwind="px-3"
+                      isImage={true}
+                      onImagePress={() => setshowPassword(!showPassword)}
+                      showPassword={showPassword}
                     />
                     {errors?.password && touched?.password && (
                       <Text className="text-red-700">{errors?.password}</Text>

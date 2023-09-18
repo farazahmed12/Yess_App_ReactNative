@@ -35,6 +35,7 @@ const Register = () => {
   console.log('state ==>', state);
 
   const [loading, setloading] = useState(false);
+  const [showPassword, setshowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     user_name: Yup.string()
@@ -204,6 +205,9 @@ const Register = () => {
                       marginTailwind="my-1"
                       paddingTailwind="px-3"
                       secureTextEntry={true}
+                      isImage={true}
+                      onImagePress={() => setshowPassword(!showPassword)}
+                      showPassword={showPassword}
                     />
                     {errors?.password && touched?.password && (
                       <Text className="text-red-700">{errors?.password}</Text>
