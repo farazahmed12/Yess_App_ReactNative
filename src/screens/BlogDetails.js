@@ -26,6 +26,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
 import {useDispatch} from 'react-redux';
 import {setLoader} from '../redux/globalState';
+import BackButton from '../components/BackButton';
 
 const BlogDetails = ({route}) => {
   // navigation
@@ -55,7 +56,12 @@ const BlogDetails = ({route}) => {
 
   if (loading) {
     return (
-      <ActivityIndicator className="mt-20" size={'large'} animating={true} />
+      <ActivityIndicator
+        className="mt-20"
+        size={'large'}
+        animating={true}
+        color={color.colorPrimary}
+      />
     );
   }
 
@@ -83,6 +89,8 @@ const BlogDetails = ({route}) => {
         </View> */}
       </ImageBackground>
 
+      <BackButton img={images.AngleLeft} onPress={() => navigation.goBack()} />
+
       <View className="flex ">
         <Text className="text-black font-serif text-lg font-bold mt-4 leading-5">
           {data.title}
@@ -102,9 +110,9 @@ const BlogDetails = ({route}) => {
               );
             }}
           />
-          {/* <Text style={{color: color.colorPrimary}} className={`text-sm `}>
+          <Text style={{color: color.colorPrimary}} className={`text-sm `}>
             {timeAgo(data.createdAt)}
-          </Text> */}
+          </Text>
         </View>
         <FlatList
           data={data?.data}

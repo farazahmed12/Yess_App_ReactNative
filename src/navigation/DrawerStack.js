@@ -23,6 +23,7 @@ import React, {useState} from 'react';
 import {images} from '../images';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../redux/userSlice';
+import CategoryWise from '../screens/CategoryWise';
 
 const Drawer = createDrawerNavigator();
 const {width, height} = Dimensions.get('window');
@@ -137,6 +138,7 @@ export const DrawerStack = () => {
       }}>
       <Drawer.Screen name="BottomStack" component={BottomStack} />
       <Drawer.Screen name="BlogDetails" component={BlogDetails} />
+      <Drawer.Screen name="CategoryWise" component={CategoryWise} />
     </Drawer.Navigator>
   );
 };

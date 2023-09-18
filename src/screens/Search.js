@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -30,6 +30,7 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [allBlogs, setAllBlogs] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
 
   // navigation
   const navigation = useNavigation();
@@ -70,6 +71,22 @@ const Search = () => {
       });
   };
 
+  // get all Categories
+  const getAllCategories = () => {
+    axios
+      .get(`${BASE_URL}/blog/all/category`)
+      .then(res => {
+        setAllCategories(res?.data?.allCategory);
+      })
+      .catch(err => {
+        console.log('error ==>', err);
+      });
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
   return (
     <View className="flex-1 px-4 ">
       <Text className="text-black font-bold text-lg mt-3">Explore</Text>
@@ -98,16 +115,20 @@ const Search = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-row justify-between items-center">
           <Text className="text-black font-bold text-lg mt-2">
-            Explore by Topics
+            Explore by Categories
           </Text>
         </View>
         <FlatList
-          data={topics}
+          data={allCategories}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => {
             return (
-              <View
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() =>
+                  navigation.navigate('CategoryWise', {data: item._id})
+                }
                 className="rounded-2xl overflow-hidden mt-3 mr-5"
                 style={{
                   height: heightPercentageToDP(30),
@@ -117,12 +138,12 @@ const Search = () => {
                   source={{uri: item.img}}
                   className="h-full w-full flex flex-col justify-end items-start rounded-2xl">
                   <View className="p-4">
-                    <Text className="text-white font-bod text-lg">
-                      {item.title}
+                    <Text className="text-white font-bold text-lg">
+                      {item.name}
                     </Text>
                   </View>
                 </ImageBackground>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />

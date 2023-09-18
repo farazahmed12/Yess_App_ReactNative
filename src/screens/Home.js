@@ -30,6 +30,7 @@ const Home = () => {
   const [loading, setloading] = useState(false);
   const [allSaved, setallSaved] = useState([]);
   const user = useSelector(state => state.user.user);
+  const [selCategory, setSelCategory] = useState('ALL');
 
   // config
   const config = {
@@ -191,7 +192,11 @@ const Home = () => {
   const headerAllCategory = () => {
     return (
       <TouchableOpacity
-        className=" px-3 py-1 rounded-full text-xs mr-2"
+        onPress={() => setSelCategory('ALL')}
+        activeOpacity={0.7}
+        className={` ${
+          selCategory == 'ALL' ? 'opacity-100' : 'opacity-70'
+        }  px-3 py-1 rounded-full text-xs mr-2`}
         style={{backgroundColor: color.colorPrimary}}>
         <Text className="text-white  uppercase">all</Text>
       </TouchableOpacity>
@@ -223,11 +228,15 @@ const Home = () => {
           horizontal={true}
           renderItem={({item}) => {
             return (
-              <View
-                className=" px-2 py-1 rounded-full text-xs mr-2"
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setSelCategory(item.name)}
+                className={` px-2 py-1 rounded-full text-xs mr-2 ${
+                  item.name == selCategory ? 'opacity-100' : 'opacity-70'
+                } `}
                 style={{backgroundColor: color.colorPrimary}}>
                 <Text className="text-white capitalize">{item.name}</Text>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />

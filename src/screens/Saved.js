@@ -52,7 +52,13 @@ const Saved = () => {
       .get(`${BASE_URL}/user/saved/blogs`, config)
       .then(res => {
         console.log('res ==>', res.data);
-        setAllSaved(res?.data);
+        const fillArr = res?.data?.map(item => {
+          return {
+            ...item,
+            isSaved: true,
+          };
+        });
+        setAllSaved(fillArr);
       })
       .catch(error => {
         console.log('error =+>', error);
@@ -72,6 +78,35 @@ const Saved = () => {
     }, 2000);
   }, []);
 
+  // handle saved
+  const _handleSaved = (id, index) => {
+    let tempData = [...allSaved];
+    if (tempData[index].isSaved) {
+      tempData[index].isSaved = false;
+    } else {
+      tempData[index].isSaved = true;
+    }
+    setAllSaved(tempData);
+
+    let data = {
+      savedBlog: id,
+    };
+
+    axios
+      .post(`${BASE_URL}/user/saved/blog`, data, config)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+        let tempData = [...allSaved];
+        if (tempData[index].isSaved == false) {
+          tempData[index].isSaved = true;
+        } else {
+          tempData[index].isSaved = false;
+        }
+        setAllSaved(tempData);
+      });
+  };
+
   return (
     <ScrollView
       refreshControl={
@@ -86,7 +121,7 @@ const Saved = () => {
 
       <View className="mt-5 flex flex-row items-center gap-x-2 px-4 ">
         {/* Category */}
-        <FlatList
+        {/* <FlatList
           data={allCategories}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
@@ -99,28 +134,34 @@ const Saved = () => {
               </View>
             );
           }}
-        />
+        /> */}
       </View>
 
       {/* All Saved */}
       <View className=" mt-3 flex items-center  ">
-        <FlatList
-          data={allSaved}
-          ListFooterComponent={() => <View className="mb-14" />}
-          renderItem={({item}) => {
-            const timeAgoBlog = timeAgo(item.createdAt);
-            return (
-              <Card
-                categories={item.categories}
-                title={item.title}
-                time={timeAgoBlog}
-                src={item.featureImg}
-                className=" mx-0 my-3 self-center  w-12/13"
-                onPress={() => navigation.navigate('BlogDetails', {item})}
-              />
-            );
-          }}
-        />
+        {allSaved?.length == 0 ? (
+          <Text className="text-md text-black">No Saved Blogs</Text>
+        ) : (
+          <FlatList
+            data={allSaved}
+            ListFooterComponent={() => <View className="mb-14" />}
+            renderItem={({item, index}) => {
+              const timeAgoBlog = timeAgo(item.createdAt);
+              return (
+                <Card
+                  categories={item.categories}
+                  title={item.title}
+                  time={timeAgoBlog}
+                  src={item.featureImg}
+                  className=" mx-0 my-3 self-center  w-12/13"
+                  onPress={() => navigation.navigate('BlogDetails', {item})}
+                  saved={item.isSaved}
+                  savedOnPress={() => _handleSaved(item._id, index)}
+                />
+              );
+            }}
+          />
+        )}
       </View>
     </ScrollView>
   );
