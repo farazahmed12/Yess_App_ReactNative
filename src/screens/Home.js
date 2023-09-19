@@ -19,6 +19,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
 import {timeAgo} from '../constants/timeago';
 import {useSelector} from 'react-redux';
+import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 const Home = () => {
   // states
@@ -145,7 +146,9 @@ const Home = () => {
       return <View className="mb-20" />;
     } else {
       return (
-        <View className="px-4 mb-20 mt-3 ">
+        <View
+          style={{marginBottom: heightPercentageToDP(10)}}
+          className="px-4 mb-20 mt-3 ">
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={getData}
@@ -236,7 +239,7 @@ const Home = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       <View className="flex flex-row px-4 justify-between mt-3 mb-3">
-        <Text className="font-bold text-lg">Home</Text>
+        <Text className="font-bold text-lg flex-1  text-black">Home</Text>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.openDrawer()}>

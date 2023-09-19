@@ -1,6 +1,7 @@
 import {firebase} from '@react-native-firebase/messaging';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {navigateTo} from './navigationHepler';
 
 export async function requestUserNotificationPermission() {
   const authStatus = await messaging().requestPermission();
@@ -32,17 +33,24 @@ const getFCMToken = async () => {
 export const notificationListner = async () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log('onNotificationOpenedApp', remoteMessage.notification);
+    if (remoteMessage) {
+      navigateTo('BlogDetails', {data: remoteMessage.data?.my_key});
+    }
   });
 
   messaging()
     .getInitialNotification()
     .then(remoteMessage => {
       if (remoteMessage) {
-        console.log('getInitialNotification', remoteMessage);
+        console.log('getInitialNotification', remoteMessage.data?.my_key);
+        navigateTo('BlogDetails', {data: remoteMessage.data?.my_key});
       }
     });
 
   messaging().messaging(remoteMessage => {
     console.log('receive foreground message ', remoteMessage);
+    if (remoteMessage) {
+      navigateTo('BlogDetails', {data: remoteMessage.data?.my_key});
+    }
   });
 };

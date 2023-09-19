@@ -163,13 +163,15 @@ const Login = () => {
                       onPress={handleSubmit}
                     />
                     <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">
-                      <View className="border border-[#ddd] w-6/12 h-0"></View>
-                      <Text className="text-center uppercase my-2">or</Text>
+                      <View className="border border-[#ddd] w-6/12 h-0 "></View>
+                      <Text className="text-center uppercase my-2 text-black">
+                        or
+                      </Text>
                       <View className="border border-[#ddd] w-6/12 h-0"></View>
                     </View>
 
                     <Pressable onPress={() => navigation.navigate('Register')}>
-                      <Text className="text-center underline text-sm mt-5">
+                      <Text className="text-center underline text-sm mt-5 text-black">
                         Create An Account
                       </Text>
                     </Pressable>

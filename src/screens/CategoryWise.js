@@ -94,37 +94,39 @@ const CategoryWise = ({route}) => {
   };
 
   return (
-    <ScrollView className="flex-1  " showsVerticalScrollIndicator={false}>
+    <ScrollView className="flex-1   " showsVerticalScrollIndicator={false}>
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
-        <Text className="font-bold text-lg">Yes App</Text>
+        <Text className="font-bold text-lg text-black">Yes App</Text>
       </View>
 
       {/* Blogs */}
       <View className=" mt-3 flex items-center  ">
         {allBlogs?.length == 0 ? (
-          <Text className="text-md text-black">No Saved Blogs</Text>
+          <Text className="text-md text-black">No Blogs Found</Text>
         ) : (
-          <FlatList
-            data={allBlogs}
-            ListFooterComponent={() => <View className="mb-14" />}
-            renderItem={({item, index}) => {
-              const timeAgoBlog = timeAgo(item.createdAt);
-              return (
-                <Card
-                  categories={item.categories}
-                  title={item.title}
-                  time={timeAgoBlog}
-                  src={item.featureImg}
-                  className=" mx-0 my-3 self-center  w-12/13"
-                  onPress={() =>
-                    navigation.navigate('BlogDetails', {data: item._id})
-                  }
-                  saved={item.isSaved}
-                  savedOnPress={() => _handleSaved(item._id, index)}
-                />
-              );
-            }}
-          />
+          <View className="w-full ">
+            <FlatList
+              data={allBlogs}
+              ListFooterComponent={() => <View className="mb-14" />}
+              renderItem={({item, index}) => {
+                const timeAgoBlog = timeAgo(item.createdAt);
+                return (
+                  <Card
+                    categories={item.categories}
+                    title={item.title}
+                    time={timeAgoBlog}
+                    src={item.featureImg}
+                    className=" mx-0 my-3 self-center  w-12/13"
+                    onPress={() =>
+                      navigation.navigate('BlogDetails', {data: item._id})
+                    }
+                    saved={item.isSaved}
+                    savedOnPress={() => _handleSaved(item._id, index)}
+                  />
+                );
+              }}
+            />
+          </View>
         )}
       </View>
     </ScrollView>

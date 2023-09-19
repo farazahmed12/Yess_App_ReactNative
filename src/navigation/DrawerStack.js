@@ -100,7 +100,7 @@ function CustomDrawerContent(props) {
                   onPress={() => props.navigation.navigate(`${item}`)}
                   activeOpacity={0.7}
                   className="mx-4">
-                  <Text className="font-bold text-md py-3 border-b-2 capitalize">
+                  <Text className="font-bold text-md py-3 border-b-2 capitalize text-black">
                     {item}
                   </Text>
                 </TouchableOpacity>

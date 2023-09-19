@@ -242,16 +242,16 @@ const Register = () => {
 
             <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">
               <View className="border border-[#ddd] w-6/12 h-0"></View>
-              <Text className="text-center uppercase ">or</Text>
+              <Text className="text-center uppercase text-black">or</Text>
               <View className="border border-[#ddd] w-6/12 h-0"></View>
             </View>
 
             <Pressable>
-              <Text className="text-center text-sm mt-2">
+              <Text className="text-center text-sm mt-2 text-black">
                 Already Have An Account?{' '}
                 <Text
                   onPress={() => navigation.navigate('Login')}
-                  className="text-center underline text-sm mt-2">
+                  className="text-center underline text-sm mt-2 text-black">
                   Log In
                 </Text>
               </Text>

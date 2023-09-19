@@ -30,13 +30,14 @@ import {
   notificationListner,
   requestUserNotificationPermission,
 } from './src/utils/notificationHelper';
+import {setNavigator} from './src/utils/navigationHepler';
 
 let persistor = persistStore(store);
 
 function App() {
   useEffect(() => {
     requestUserNotificationPermission();
-    // notificationListner();
+    notificationListner();
   }, []);
 
   let user = undefined;
@@ -45,7 +46,7 @@ function App() {
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <NavigationContainer>
+          <NavigationContainer ref={ref => setNavigator(ref)}>
             <SafeAreaView>
               <StatusBar backgroundColor={'black'} />
             </SafeAreaView>

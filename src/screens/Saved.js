@@ -115,7 +115,7 @@ const Saved = () => {
       className="flex-1  "
       showsVerticalScrollIndicator={false}>
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
-        <Text className="font-bold text-lg">Yes App</Text>
+        <Text className="font-bold text-lg text-black">Yess App</Text>
         {/* <Image source={images.BellLogo} className="w-5 h-5" /> */}
       </View>
 

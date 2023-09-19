@@ -23,11 +23,12 @@ const InputField = ({
         isBorder && 'border'
       } border-gray-400 flex flex-row justify-between items-center  ${marginTailwind} ${paddingTailwind}`}>
       <TextInput
-        className="flex-1"
+        className="flex-1 text-black placeholder:text-black"
         secureTextEntry={
           secureTextEntry && showPassword == false ? true : false
         }
         placeholder={placeholder}
+        placeholderTextColor={'black'}
         keyboardType={keyboardType}
         onChangeText={handleOnChangeTxt}
         {...props}

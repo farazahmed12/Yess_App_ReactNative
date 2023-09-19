@@ -27,18 +27,20 @@ const Card = ({
         source={{uri: src}}
         className="w-24 h-28 mr-3 object-cover rounded-l-lg"
       />
-      <View className="flex flex-col justify-start mt-2 w-8/12">
+      <View className="flex flex-1 flex-col justify-start mt-2 ">
         <FlatList
           data={categories}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => {
             return (
-              <Text
-                className={`font-bold text-xs underline mr-1`}
-                style={{color: color.colorPrimary}}>
-                {item.name}
-              </Text>
+              <View className=" mr-1 w-full px-2 ">
+                <Text
+                  className={` font-bold text-xs underline `}
+                  style={{color: color.colorPrimary}}>
+                  {item.name}
+                </Text>
+              </View>
             );
           }}
         />
