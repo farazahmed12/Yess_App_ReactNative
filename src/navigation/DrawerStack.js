@@ -32,7 +32,7 @@ function CustomDrawerContent(props) {
   const [categories, setCategories] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
 
-  const drawerItems = ['Home', 'Search', 'Saved', 'Profile'];
+  const drawerItems = ['Home', 'Search', 'Saved'];
 
   // dispatch
   const dispatch = useDispatch();

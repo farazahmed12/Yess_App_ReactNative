@@ -9,31 +9,67 @@ import {
   FlatList,
   StyleSheet,
   View,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import color from '../constants/color';
+import axios from 'axios';
+import {BASE_URL} from '../constants/baseurl';
+import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
 const Banner = ({data}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [trending, settrending] = useState([]);
+
+  // navigation
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/blog/search/blog/category/650a38af428497154edf2a3a`)
+      .then(res => {
+        settrending(res?.data?.blog?.slice(0, 5));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   const renderBanner = ({item}) => {
     return (
       <View style={styles.renderBannerStyle} className="rounded-2xl">
-        <Image
-          source={{uri: item}}
+        <ImageBackground
+          source={{uri: item.featureImg}}
           resizeMode="cover"
-          style={styles.bannerImg}
-        />
+          style={styles.bannerImg}>
+          <LinearGradient
+            colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
+            className="absolute bottom-0  justify-end p-2 py-5  w-full">
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('BlogDetails', {data: item})}>
+              <Text className="text-white text-xl  ">
+                {item.title?.length > 39
+                  ? item.title?.slice(0, 40) + '...'
+                  : item.title}
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </ImageBackground>
       </View>
     );
   };
+
   return (
     <View style={{flex: 1, width: '100%'}}>
       <View style={styles.container} className="rounded-2xl">
         <FlatList
-          data={data ? data : []}
+          data={trending ? trending : []}
           renderItem={renderBanner}
           keyExtractor={(_, index) => index.toString()}
           pagingEnabled
@@ -59,8 +95,8 @@ const Banner = ({data}) => {
       </View>
       <View style={styles.dotConatiner}>
         <View style={styles.indicatorContainer}>
-          {data &&
-            data.map((_, imageIndex) => {
+          {trending &&
+            trending.map((_, imageIndex) => {
               const animatedWidth = scrollX.interpolate({
                 inputRange: [
                   width * (imageIndex - 2),

@@ -17,7 +17,6 @@ import Card from '../components/Card';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
-import {timeAgo} from '../constants/timeago';
 import {useSelector} from 'react-redux';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
@@ -57,7 +56,7 @@ const Home = () => {
     axios
       .get(`${BASE_URL}/user/saved/blogs`, config)
       .then(res => {
-        setAllBlogs(res.data);
+        setallSaved(res.data);
       })
       .catch(error => {
         console.log('error');
@@ -73,7 +72,9 @@ const Home = () => {
           return {
             ...item,
             isSaved:
-              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+              allSaved?.length > 0
+                ? allSaved.some(x => x?._id == item._id)
+                : false,
           };
         });
         setAllBlogs(fillArr);
@@ -98,9 +99,12 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getAllSaved();
-    getAllBlogs();
-    getAllCategories();
+    const focusListener = navigation.addListener('focus', () => {
+      getAllSaved();
+      getAllCategories();
+      getAllBlogs();
+    });
+    return focusListener;
   }, []);
 
   const onRefresh = React.useCallback(() => {
@@ -127,7 +131,9 @@ const Home = () => {
           return {
             ...item,
             isSaved:
-              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+              allSaved?.length > 0
+                ? allSaved.some(x => x?._id == item._id)
+                : false,
           };
         });
         setAllBlogs([...allBlogs, ...fillArr]);
@@ -142,7 +148,7 @@ const Home = () => {
 
   // flatlist footer
   const renderFooter = () => {
-    if (totalPages < pageNumber && selCategory != 'ALL') {
+    if (totalPages < pageNumber || selCategory != 'ALL') {
       return <View className="mb-20" />;
     } else {
       return (
@@ -221,7 +227,9 @@ const Home = () => {
           return {
             ...item,
             isSaved:
-              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+              allSaved?.length > 0
+                ? allSaved.some(x => x?._id == item._id)
+                : false,
           };
         });
         setAllBlogs(newArr);
@@ -275,13 +283,11 @@ const Home = () => {
           data={allBlogs}
           ListFooterComponent={renderFooter}
           renderItem={({item, index}) => {
-            const timeAgoBlog = timeAgo(item.createdAt);
-
             return (
               <Card
                 categories={item.categories}
                 title={item.title}
-                time={timeAgoBlog}
+                time={item.createdAt?.slice(0, 10)}
                 src={item.featureImg}
                 onPress={() =>
                   navigation.navigate('BlogDetails', {data: item._id})

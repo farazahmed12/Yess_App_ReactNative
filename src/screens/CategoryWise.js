@@ -5,7 +5,6 @@ import {BASE_URL} from '../constants/baseurl';
 import {useNavigation} from '@react-navigation/native';
 
 import Card from '../components/Card';
-import {timeAgo} from '../constants/timeago';
 import {useSelector} from 'react-redux';
 import BackButton from '../components/BackButton';
 import {images} from '../images';
@@ -49,7 +48,9 @@ const CategoryWise = ({route}) => {
           return {
             ...item,
             isSaved:
-              allSaved?.length > 0 ? allSaved.some(x => x == item._id) : false,
+              allSaved?.length > 0
+                ? allSaved.some(x => x?._id == item._id)
+                : false,
           };
         });
         setallBlogs(fillArr);
@@ -96,7 +97,7 @@ const CategoryWise = ({route}) => {
   return (
     <ScrollView className="flex-1   " showsVerticalScrollIndicator={false}>
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
-        <Text className="font-bold text-lg text-black">Yes App</Text>
+        <Text className="font-bold text-lg text-black">Yess App</Text>
       </View>
 
       {/* Blogs */}
@@ -109,12 +110,11 @@ const CategoryWise = ({route}) => {
               data={allBlogs}
               ListFooterComponent={() => <View className="mb-14" />}
               renderItem={({item, index}) => {
-                const timeAgoBlog = timeAgo(item.createdAt);
                 return (
                   <Card
                     categories={item.categories}
                     title={item.title}
-                    time={timeAgoBlog}
+                    time={item.createdAt?.slice(0, 10)}
                     src={item.featureImg}
                     className=" mx-0 my-3 self-center  w-12/13"
                     onPress={() =>

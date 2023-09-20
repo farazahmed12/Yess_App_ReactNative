@@ -74,16 +74,9 @@ const BottomStack = () => {
         name="Saved"
         component={Saved}
         options={{
-          tabBarIcon: BottomTabComponent('Saved', images.StarLogo),
+          tabBarIcon: BottomTabComponent('Saved', images.HeartFill),
         }}
       />
-      {/* <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: BottomTabComponent('Profile', images.UserLogo),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };

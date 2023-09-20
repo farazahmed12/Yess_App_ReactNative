@@ -8,6 +8,7 @@ import {
   Text,
   Touchable,
   TouchableOpacity,
+  Dimensions,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -21,12 +22,15 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import {timeAgo} from '../constants/timeago';
 import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
 import {useDispatch} from 'react-redux';
 import {setLoader} from '../redux/globalState';
 import BackButton from '../components/BackButton';
+
+import RenderHtml from 'react-native-render-html';
+
+const {width, height} = Dimensions.get('window');
 
 const BlogDetails = ({route}) => {
   // navigation
@@ -38,7 +42,7 @@ const BlogDetails = ({route}) => {
   const [loading, setLoading] = useState(true);
 
   // data
-  const id = route.params.data;
+  const id = route.params.data._id;
 
   useEffect(() => {
     setLoading(true);
@@ -52,8 +56,6 @@ const BlogDetails = ({route}) => {
       })
       .finally(() => setLoading(false));
   }, [id]);
-
-  console.log('data ==>', data);
 
   if (loading) {
     return (
@@ -115,7 +117,7 @@ const BlogDetails = ({route}) => {
             <Text
               style={{color: color.colorPrimary}}
               className={`text-xs capitalize`}>
-              Published: {timeAgo(data.createdAt)}
+              Published: {data?.createdAt?.slice(0, 10)}
             </Text>
             <Text
               style={{color: color.colorPrimary}}
@@ -133,7 +135,12 @@ const BlogDetails = ({route}) => {
             } else if (item.ctype == 'heading') {
               return <HeadingBox key={item._id} data={item.content} />;
             } else if (item.ctype == 'text') {
-              return <TextBox key={item._id} data={item.content} />;
+              return (
+                <RenderHtml
+                  contentWidth={width}
+                  source={{html: item.content}}
+                />
+              );
             }
           }}
         />

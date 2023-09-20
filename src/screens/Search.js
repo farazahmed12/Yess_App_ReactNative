@@ -22,8 +22,9 @@ import Card from '../components/Card';
 import InputField from '../components/Input';
 import {images} from '../images';
 import color from '../constants/color';
-import {timeAgo} from '../constants/timeago';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 
 const Search = () => {
   // states
@@ -31,6 +32,15 @@ const Search = () => {
   const [query, setQuery] = useState('');
   const [allBlogs, setAllBlogs] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [allSaved, setallSaved] = useState([]);
+  const user = useSelector(state => state.user.user);
+
+  // config
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
 
   // navigation
   const navigation = useNavigation();
@@ -54,23 +64,6 @@ const Search = () => {
     },
   ];
 
-  const _hanldeSearchSubmit = () => {
-    axios
-      .get(`${BASE_URL}/blog/search/blog/${query}`)
-      .then(res => {
-        console.log('res=====>', res.data);
-        setAllBlogs(res?.data?.blog);
-      })
-      .catch(error => {
-        Toast.show({
-          type: 'error',
-          text1: 'Error While Searching For Blog ',
-          visibilityTime: 1000,
-          autoHide,
-        });
-      });
-  };
-
   // get all Categories
   const getAllCategories = () => {
     axios
@@ -83,9 +76,80 @@ const Search = () => {
       });
   };
 
+  // get all saved
+  const getAllSaved = () => {
+    axios
+      .get(`${BASE_URL}/user/saved/blogs`, config)
+      .then(res => {
+        setallSaved(res.data);
+      })
+      .catch(error => {
+        console.log('error');
+      });
+  };
+
   useEffect(() => {
-    getAllCategories();
+    const focusListener = navigation.addListener('focus', () => {
+      getAllCategories();
+      getAllSaved();
+    });
+    return focusListener;
   }, []);
+
+  const _hanldeSearchSubmit = () => {
+    axios
+      .get(`${BASE_URL}/blog/search/blog/${query}`)
+      .then(res => {
+        console.log('res ==>', res);
+        const fillArr = res?.data?.blog.map(item => {
+          return {
+            ...item,
+            isSaved:
+              allSaved?.length > 0
+                ? allSaved.some(x => x?._id == item._id)
+                : false,
+          };
+        });
+        setAllBlogs(fillArr);
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Error While Searching For Blog ',
+          visibilityTime: 1000,
+          autoHide,
+        });
+      });
+  };
+
+  // handle saved
+  const _handleSaved = (id, index) => {
+    let tempData = [...allBlogs];
+    if (tempData[index].isSaved) {
+      tempData[index].isSaved = false;
+    } else {
+      tempData[index].isSaved = true;
+    }
+    setAllBlogs(tempData);
+
+    let data = {
+      savedBlog: id,
+    };
+
+    axios
+      .post(`${BASE_URL}/user/saved/blog`, data, config)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+        let tempData = [...allBlogs];
+        if (tempData[index].isSaved == false) {
+          tempData[index].isSaved = true;
+        } else {
+          tempData[index].isSaved = false;
+        }
+        setAllBlogs(tempData);
+      });
+  };
 
   return (
     <View className="flex-1 px-4 ">
@@ -95,7 +159,7 @@ const Search = () => {
         <InputField
           placeholder={'Search Here'}
           isBorder={false}
-          paddingTailwind="w-10/12 py-2"
+          paddingTailwind="w-10/12 "
           keyboardType={'default'}
           handleOnChangeTxt={e => setQuery(e)}
           onEndEditing={() => _hanldeSearchSubmit()}
@@ -111,7 +175,6 @@ const Search = () => {
           <ActivityIndicator size={'small'} color={color.colorPrimary} />
         )}
       </View>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-row justify-between items-center">
           <Text className="text-black font-bold text-lg mt-2">
@@ -137,37 +200,41 @@ const Search = () => {
                 <ImageBackground
                   source={{uri: item.img}}
                   className="h-full w-full flex flex-col justify-end items-start rounded-2xl">
-                  <View className="p-4">
-                    <Text className="text-white font-bold text-lg">
-                      {item.name}
-                    </Text>
-                  </View>
+                  <LinearGradient
+                    colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
+                    className="absolute bottom-0  justify-end w-full">
+                    <View className="p-4">
+                      <Text className="text-white font-bold text-lg">
+                        {item.name}
+                      </Text>
+                    </View>
+                  </LinearGradient>
                 </ImageBackground>
               </TouchableOpacity>
             );
           }}
         />
-        <View className="mt-3">
-          <FlatList
-            data={allBlogs}
-            ListFooterComponent={() => <View className="mb-20" />}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              const timeAgoBlog = timeAgo(item.createdAt);
 
-              return (
-                <Card
-                  category={'Tech'}
-                  title={item.title}
-                  time={timeAgoBlog}
-                  src={item.featureImg}
-                  className="mx-0 my-2"
-                  onPress={() => navigation.navigate('BlogDetails', {item})}
-                />
-              );
-            }}
-          />
-        </View>
+        <FlatList
+          className="mt-3"
+          data={allBlogs}
+          ListFooterComponent={() => <View className="mb-20" />}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item, index}) => {
+            return (
+              <Card
+                category={'Tech'}
+                title={item.title}
+                time={item.createdAt?.slice(0, 10)}
+                src={item.featureImg}
+                className="mx-4 my-2 w-full"
+                onPress={() => navigation.navigate('BlogDetails', {data: item})}
+                saved={item.isSaved}
+                savedOnPress={() => _handleSaved(item._id, index)}
+              />
+            );
+          }}
+        />
       </ScrollView>
     </View>
   );

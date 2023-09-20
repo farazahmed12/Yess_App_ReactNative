@@ -14,7 +14,6 @@ import SmallCardWithIcon from '../components/SmallCardWithIcon';
 import {BASE_URL} from '../constants/baseurl';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-import {timeAgo} from '../constants/timeago';
 import Card from '../components/Card';
 import {useNavigation} from '@react-navigation/native';
 
@@ -65,9 +64,17 @@ const Saved = () => {
       });
   };
 
+  // useEffect(() => {
+  //   getAllCategories();
+  //   getAllSaved();
+  // }, []);
+
   useEffect(() => {
-    getAllCategories();
-    getAllSaved();
+    const focusListener = navigation.addListener('focus', () => {
+      getAllSaved();
+      getAllCategories();
+    });
+    return focusListener;
   }, []);
 
   const onRefresh = React.useCallback(() => {
@@ -114,47 +121,30 @@ const Saved = () => {
       }
       className="flex-1  "
       showsVerticalScrollIndicator={false}>
-      <View className="flex flex-row justify-between mt-3 mb-1 px-4">
+      <View className="flex flex-row justify-between mt-3 mb-1 px-4 ">
         <Text className="font-bold text-lg text-black">Yess App</Text>
         {/* <Image source={images.BellLogo} className="w-5 h-5" /> */}
       </View>
 
-      <View className="mt-5 flex flex-row items-center gap-x-2 px-4 ">
-        {/* Category */}
-        {/* <FlatList
-          data={allCategories}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          renderItem={({item}) => {
-            return (
-              <View
-                className=" px-2 py-1 rounded-full text-xs mr-2"
-                style={{backgroundColor: color.colorPrimary}}>
-                <Text className="text-white capitalize">{item.name}</Text>
-              </View>
-            );
-          }}
-        /> */}
-      </View>
-
       {/* All Saved */}
-      <View className=" mt-3 flex items-center  ">
+      <View className=" mt-3 flex   ">
         {allSaved?.length == 0 ? (
-          <Text className="text-md text-black">No Saved Blogs</Text>
+          <Text className="text-md text-black ml-5">No Saved Blogs</Text>
         ) : (
           <FlatList
             data={allSaved}
             ListFooterComponent={() => <View className="mb-14" />}
             renderItem={({item, index}) => {
-              const timeAgoBlog = timeAgo(item.createdAt);
               return (
                 <Card
                   categories={item.categories}
                   title={item.title}
-                  time={timeAgoBlog}
+                  time={item.createdAt?.slice(0, 10)}
                   src={item.featureImg}
                   className=" mx-0 my-3 self-center  w-12/13"
-                  onPress={() => navigation.navigate('BlogDetails', {item})}
+                  onPress={() =>
+                    navigation.navigate('BlogDetails', {data: item})
+                  }
                   saved={item.isSaved}
                   savedOnPress={() => _handleSaved(item._id, index)}
                 />

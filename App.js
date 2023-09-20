@@ -31,13 +31,26 @@ import {
   requestUserNotificationPermission,
 } from './src/utils/notificationHelper';
 import {setNavigator} from './src/utils/navigationHepler';
+import {PermissionsAndroid} from 'react-native';
 
 let persistor = persistStore(store);
 
 function App() {
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+      console.log('granted =========>', granted);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   useEffect(() => {
-    requestUserNotificationPermission();
-    notificationListner();
+    // requestCameraPermission();
+    // requestUserNotificationPermission();
+    // notificationListner();
   }, []);
 
   let user = undefined;
