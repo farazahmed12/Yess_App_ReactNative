@@ -152,7 +152,7 @@ const Search = () => {
   };
 
   return (
-    <View className="flex-1 px-4 ">
+    <View className="flex-1 px-4  ">
       <Text className="text-black font-bold text-lg mt-3">Explore</Text>
       {/* Search bar */}
       <View className="flex flex-row items-center justify-around border bg-gray-200 border-gray-400 rounded-lg w-full mt-4">
@@ -227,7 +227,7 @@ const Search = () => {
                 title={item.title}
                 time={item.createdAt?.slice(0, 10)}
                 src={item.featureImg}
-                className="mx-4 my-2 w-full"
+                customClassName={'mx-0 my-0 w-full'}
                 onPress={() => navigation.navigate('BlogDetails', {data: item})}
                 saved={item.isSaved}
                 savedOnPress={() => _handleSaved(item._id, index)}

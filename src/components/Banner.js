@@ -30,14 +30,17 @@ const Banner = ({data}) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/blog/search/blog/category/650a38af428497154edf2a3a`)
-      .then(res => {
-        settrending(res?.data?.blog?.slice(0, 5));
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const focusListener = navigation.addListener('focus', () => {
+      axios
+        .get(`${BASE_URL}/blog/search/blog/category/650a38af428497154edf2a3a`)
+        .then(res => {
+          settrending(res?.data?.blog?.slice(0, 5));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
+    return focusListener;
   }, []);
 
   const renderBanner = ({item}) => {
@@ -54,8 +57,8 @@ const Banner = ({data}) => {
               activeOpacity={0.7}
               onPress={() => navigation.navigate('BlogDetails', {data: item})}>
               <Text className="text-white text-xl  ">
-                {item.title?.length > 39
-                  ? item.title?.slice(0, 40) + '...'
+                {item.title?.length > 69
+                  ? item.title?.slice(0, 70) + '...'
                   : item.title}
               </Text>
             </TouchableOpacity>

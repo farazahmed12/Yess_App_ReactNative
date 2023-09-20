@@ -75,7 +75,7 @@ const Login = () => {
         Toast.show({
           type: 'success',
           text1: 'Login Successfully',
-          onHide: () => navigation.navigate('DrawerStack'),
+          onHide: () => navigation.navigate('HomeStack'),
         });
       })
       .catch(error => {

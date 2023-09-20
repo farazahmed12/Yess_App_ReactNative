@@ -21,7 +21,7 @@ const MainStack = () => {
   return (
     <Stack.Navigator
       initialRouteName={
-        Object.keys(user).length > 0 ? 'DrawerStack' : 'AuthStack'
+        Object.keys(user).length > 0 ? 'HomeStack' : 'AuthStack'
       }>
       {isLoader ? (
         <Loader />
@@ -34,8 +34,8 @@ const MainStack = () => {
           />
 
           <Stack.Screen
-            name="DrawerStack"
-            component={DrawerStack}
+            name="HomeStack"
+            component={HomeStack}
             options={{headerShown: false}}
           />
         </>

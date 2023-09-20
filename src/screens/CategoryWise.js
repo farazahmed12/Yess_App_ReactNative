@@ -116,9 +116,9 @@ const CategoryWise = ({route}) => {
                     title={item.title}
                     time={item.createdAt?.slice(0, 10)}
                     src={item.featureImg}
-                    className=" mx-0 my-3 self-center  w-12/13"
+                    customClassName=" mx-0 my-3 self-center  w-12/13"
                     onPress={() =>
-                      navigation.navigate('BlogDetails', {data: item._id})
+                      navigation.navigate('BlogDetails', {data: item})
                     }
                     saved={item.isSaved}
                     savedOnPress={() => _handleSaved(item._id, index)}

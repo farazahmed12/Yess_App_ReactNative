@@ -5,13 +5,15 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
 import SmallCardWithIcon from '../components/SmallCardWithIcon';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUser} from '../redux/userSlice';
 
 const Profile = () => {
   const [tab, setTab] = React.useState('saved');
@@ -38,118 +40,55 @@ const Profile = () => {
 
   // navigation
   const navigation = useNavigation();
-  console.log('open ==>', navigation);
+
+  // dispatch
+  const dispatch = useDispatch();
+
+  // state
+  const {user} = useSelector(state => state.user.user);
+
+  const _handleLogout = () => {
+    navigation.navigate(`AuthStack`);
+    dispatch(setUser({}));
+  };
 
   return (
     <View className="flex-1 px-4 mt-5">
-      <View className="flex flex-row justify-end">
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation.openDrawer()}>
-          <Image source={images.MenuLogo} className="w-5 h-5" />
-        </TouchableOpacity>
-      </View>
       {/* Profile Image */}
       <View className="flex justify-center items-center mt-1">
         <Image
-          source={{
-            uri: img,
-          }}
+          style={{tintColor: 'rgba(4,4,4,0.50)'}}
+          source={images.UserLogo}
           className="w-28 h-28 rounded-full"
         />
-        <Text className="text-md font-semibold  text-black mt-1 ">
-          Mellisia Jane
-        </Text>
-
-        <Text className="text-sm text-gray-400 mt-1 mb-2">@mellisia_jane</Text>
-      </View>
-      {/* Tabs View */}
-      <View className="flex flex-row self-center w-full justify-between mt-1 rounded-md bg-gray-300">
-        <Text
-          onPress={() => setTab('saved')}
-          className={`px-8 py-2 ${
-            tab == 'saved' ? 'text-white' : 'text-black'
-          } font-semibold rounded-md`}
-          style={{
-            backgroundColor: tab == 'saved' ? color.colorPrimary : '#d1d5db',
-          }}>
-          Saved
-        </Text>
-        <Text
-          onPress={() => setTab('history')}
-          className={`px-8 py-2 ${
-            tab == 'history' ? 'text-white' : 'text-black'
-          } font-semibold rounded-md`}
-          style={{
-            backgroundColor: tab == 'history' ? color.colorPrimary : '#d1d5db',
-          }}>
-          History
-        </Text>
-        <Text
-          className={`px-8 py-2 ${
-            tab == 'following' ? 'text-white' : 'text-black'
-          } font-semibold rounded-md`}
-          onPress={() => setTab('following')}
-          style={{
-            backgroundColor:
-              tab == 'following' ? color.colorPrimary : '#d1d5db',
-          }}>
-          Following
-        </Text>
       </View>
 
-      {tab == 'saved' && (
-        <FlatList
-          data={data}
-          showsVerticalScrollIndicator={false}
-          ListFooterComponent={() => <View className="mb-14" />}
-          renderItem={({item}) => {
-            return (
-              <SmallCardWithIcon
-                title={item.title}
-                category={item.category}
-                time={item.time}
-                isIcon={true}
-                iconSrc={images.DotsLogo}
-              />
-            );
-          }}
-        />
-      )}
+      <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
+        <Text className="text-sm text-black">Name:</Text>
+        <Text className="text-sm text-black">{user?.name}</Text>
+      </View>
 
-      {tab == 'history' && (
-        <FlatList
-          data={data.slice(0, 1)}
-          showsVerticalScrollIndicator={false}
-          ListFooterComponent={() => <View className="mb-14" />}
-          renderItem={({item}) => {
-            return (
-              <SmallCardWithIcon
-                title={item.title}
-                category={item.category}
-                time={item.time}
-              />
-            );
-          }}
-        />
-      )}
+      <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
+        <Text className="text-sm text-black">Username:</Text>
+        <Text className="text-sm text-black">{user?.user_name}</Text>
+      </View>
 
-      {tab == 'following' && (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data.slice(0, 2)}
-          ListFooterComponent={() => <View className="mb-14" />}
-          renderItem={({item}) => {
-            return (
-              <SmallCardWithIcon
-                title={item.title}
-                category={item.category}
-                time={item.time}
-              />
-            );
-          }}
-        />
-      )}
+      <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
+        <Text className="text-sm text-black">Email:</Text>
+        <Text className="text-sm text-black">{user?.email}</Text>
+      </View>
+
+      <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
+        <Text className="text-sm text-black">Phone Number:</Text>
+        <Text className="text-sm text-black">{user?.phone_number}</Text>
+      </View>
+
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => _handleLogout()}
+        className="my-2 py-5 px-7 flex flex-row justify-center rounded-md shadow bg-red-600">
+        <Text className="text-md uppercase font-bold text-white">Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };

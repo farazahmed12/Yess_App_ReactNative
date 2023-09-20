@@ -248,11 +248,6 @@ const Home = () => {
       }>
       <View className="flex flex-row px-4 justify-between mt-3 mb-3">
         <Text className="font-bold text-lg flex-1  text-black">Home</Text>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation.openDrawer()}>
-          <Image source={images.MenuLogo} className="w-5 h-5" />
-        </TouchableOpacity>
       </View>
       <Banner data={imgData} />
 
@@ -289,9 +284,7 @@ const Home = () => {
                 title={item.title}
                 time={item.createdAt?.slice(0, 10)}
                 src={item.featureImg}
-                onPress={() =>
-                  navigation.navigate('BlogDetails', {data: item._id})
-                }
+                onPress={() => navigation.navigate('BlogDetails', {data: item})}
                 saved={item.isSaved}
                 savedOnPress={() => _handleSaved(item._id, index)}
               />

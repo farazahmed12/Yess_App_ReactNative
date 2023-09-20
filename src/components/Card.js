@@ -11,18 +11,22 @@ const Card = ({
   time,
   onPress,
   src,
-  className = 'mx-4 my-2',
+  customClassName = 'mx-4 my-2',
   saved = false,
   savedOnPress,
 }) => {
   // navigation
   const navigation = useNavigation();
 
+  console.log('====================================');
+  console.log('====', customClassName);
+  console.log('====================================');
+
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
-      className={`shadow-md flex flex-row  rounded-lg bg-gray-100 ${className}`}>
+      className={`shadow-md flex flex-row  rounded-lg bg-gray-100 ${customClassName}`}>
       <Image
         source={{uri: src}}
         className="w-24 h-28 mr-3 object-cover rounded-l-lg"

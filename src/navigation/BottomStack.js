@@ -24,18 +24,20 @@ const BottomStack = () => {
             width: width * 0.25,
             borderColor: color.colorPrimary,
           }}
-          className={`items-center ${focused ? `border-b-2 ` : ''}`}>
+          className={`items-center `}>
           <Image
-            style={{tintColor: focused ? color.colorPrimary : 'black'}}
+            style={{
+              tintColor: focused ? color.colorPrimary : 'rgba(4,4,4,0.40)',
+            }}
             className="w-6 h-6"
             resizeMode="contain"
             source={image}
           />
-          <Text
+          {/* <Text
             style={{color: focused ? color.colorPrimary : 'black'}}
             className={`${focused ? `font-bold ` : ''} text-xs uppercase`}>
             {name}
-          </Text>
+          </Text> */}
         </View>
       );
     };
@@ -75,6 +77,13 @@ const BottomStack = () => {
         component={Saved}
         options={{
           tabBarIcon: BottomTabComponent('Saved', images.HeartFill),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: BottomTabComponent('Profile', images.UserLogo),
         }}
       />
     </Tab.Navigator>
