@@ -119,11 +119,10 @@ const Saved = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      className="flex-1  "
+      className="flex-1 "
       showsVerticalScrollIndicator={false}>
-      <View className="flex flex-row justify-between mt-3 mb-1 px-4 ">
-        <Text className="font-bold text-lg text-black">Yess App</Text>
-        {/* <Image source={images.BellLogo} className="w-5 h-5" /> */}
+      <View className="flex flex-row justify-between mt-3 mb-1 px-4">
+        <Text className="font-bold text-lg text-black">Saved</Text>
       </View>
 
       {/* All Saved */}
@@ -141,7 +140,7 @@ const Saved = () => {
                   title={item.title}
                   time={item.createdAt?.slice(0, 10)}
                   src={item.featureImg}
-                  customClassName=" mx-0 my-3 self-center  w-12/13"
+                  customClassName=" mx-4 my-3 self-center  w-12/13"
                   onPress={() =>
                     navigation.navigate('BlogDetails', {data: item})
                   }

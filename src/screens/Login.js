@@ -75,14 +75,18 @@ const Login = () => {
         Toast.show({
           type: 'success',
           text1: 'Login Successfully',
-          onHide: () => navigation.navigate('HomeStack'),
+          onHide: () =>
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'HomeStack'}],
+            }),
         });
       })
       .catch(error => {
-        // console.log('error ==>', error);
+        console.log('error ==>', error);
         Toast.show({
           type: 'error',
-          text1: 'Error While Logging In',
+          text1: error?.response?.data || 'SomeThing Went Wrong',
           autoHide: true,
           visibilityTime: 1000,
         });

@@ -18,10 +18,6 @@ const Card = ({
   // navigation
   const navigation = useNavigation();
 
-  console.log('====================================');
-  console.log('====', customClassName);
-  console.log('====================================');
-
   return (
     <TouchableOpacity
       onPress={onPress}

@@ -15,6 +15,7 @@ import {
   Text,
   useColorScheme,
   View,
+  PermissionsAndroid,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -30,27 +31,21 @@ import {
   notificationListner,
   requestUserNotificationPermission,
 } from './src/utils/notificationHelper';
+import {
+  request,
+  PERMISSIONS,
+  checkNotifications,
+  openSettings,
+  requestNotifications,
+} from 'react-native-permissions';
 import {setNavigator} from './src/utils/navigationHepler';
-import {PermissionsAndroid} from 'react-native';
 
 let persistor = persistStore(store);
 
 function App() {
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-      console.log('granted =========>', granted);
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
   useEffect(() => {
-    // requestCameraPermission();
-    // requestUserNotificationPermission();
-    // notificationListner();
+    requestUserNotificationPermission();
+    notificationListner();
   }, []);
 
   let user = undefined;

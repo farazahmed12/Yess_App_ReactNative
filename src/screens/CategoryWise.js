@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, ScrollView, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
@@ -8,15 +15,17 @@ import Card from '../components/Card';
 import {useSelector} from 'react-redux';
 import BackButton from '../components/BackButton';
 import {images} from '../images';
+import color from '../constants/color';
 
 const CategoryWise = ({route}) => {
   // data
-  const id = route.params.data;
+  const data = route.params.data;
 
   // states
   const [allBlogs, setallBlogs] = useState([]);
   const [allSaved, setallSaved] = useState([]);
   const user = useSelector(state => state.user.user);
+  const [loading, setloading] = useState(false);
 
   // navigation
   const navigation = useNavigation();
@@ -41,8 +50,9 @@ const CategoryWise = ({route}) => {
 
   // get blogs by category
   const getBlogsByCAtegory = () => {
+    setloading(true);
     axios
-      .get(`${BASE_URL}/blog/search/blog/category/${id}`)
+      .get(`${BASE_URL}/blog/search/blog/category/${data?._id}`)
       .then(res => {
         const fillArr = res?.data?.blog?.map(item => {
           return {
@@ -57,13 +67,16 @@ const CategoryWise = ({route}) => {
       })
       .catch(error => {
         console.log(error);
+      })
+      .finally(() => {
+        setloading(false);
       });
   };
 
   useEffect(() => {
     getAllSaved();
     getBlogsByCAtegory();
-  }, [id]);
+  }, [data?._id]);
 
   // handle saved
   const _handleSaved = (id, index) => {
@@ -94,10 +107,23 @@ const CategoryWise = ({route}) => {
       });
   };
 
+  if (loading) {
+    return (
+      <ActivityIndicator
+        className="mt-20"
+        size={'large'}
+        animating={true}
+        color={color.colorPrimary}
+      />
+    );
+  }
+
   return (
     <ScrollView className="flex-1   " showsVerticalScrollIndicator={false}>
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
-        <Text className="font-bold text-lg text-black">Yess App</Text>
+        <Text className="font-bold text-lg text-black">
+          Category/{data?.name}
+        </Text>
       </View>
 
       {/* Blogs */}
@@ -112,11 +138,11 @@ const CategoryWise = ({route}) => {
               renderItem={({item, index}) => {
                 return (
                   <Card
-                    categories={item.categories}
+                    categories={[{name: data?.name}]}
                     title={item.title}
                     time={item.createdAt?.slice(0, 10)}
                     src={item.featureImg}
-                    customClassName=" mx-0 my-3 self-center  w-12/13"
+                    customClassName=" mx-4 my-3 self-center  w-12/13"
                     onPress={() =>
                       navigation.navigate('BlogDetails', {data: item})
                     }

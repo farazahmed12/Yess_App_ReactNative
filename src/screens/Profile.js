@@ -53,24 +53,22 @@ const Profile = () => {
   };
 
   return (
-    <View className="flex-1 px-4 mt-5">
+    <View className="flex-1 px-4">
+      <View className="flex flex-row justify-between mt-3 mb-1 ">
+        <Text className="font-bold text-lg text-black">Profile</Text>
+      </View>
       {/* Profile Image */}
       <View className="flex justify-center items-center mt-1">
         <Image
           style={{tintColor: 'rgba(4,4,4,0.50)'}}
           source={images.UserLogo}
-          className="w-28 h-28 rounded-full"
+          className="w-16 h-16 rounded-full"
         />
       </View>
 
       <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
         <Text className="text-sm text-black">Name:</Text>
         <Text className="text-sm text-black">{user?.name}</Text>
-      </View>
-
-      <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">
-        <Text className="text-sm text-black">Username:</Text>
-        <Text className="text-sm text-black">{user?.user_name}</Text>
       </View>
 
       <View className="my-2 py-5 px-7 flex flex-row justify-between rounded-md shadow">

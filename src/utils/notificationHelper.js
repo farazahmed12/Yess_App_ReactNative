@@ -2,16 +2,34 @@ import {firebase} from '@react-native-firebase/messaging';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigateTo} from './navigationHepler';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 
 export async function requestUserNotificationPermission() {
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
+  if (Platform.OS == 'android') {
+    let notificationSetings = await notifee.getNotificationSettings('default');
+    if (notificationSetings.authorizationStatus == AuthorizationStatus.DENIED) {
+      Alert.alert(
+        'Warning',
+        'Please enable notifications for push notifications',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              notifee.openNotificationSettings();
+            },
+          },
+          {
+            text: 'Cancel',
+          },
+        ],
+      );
+    }
+  }
   if (enabled) {
-    console.log('Authorization status:', authStatus);
-
     getFCMToken();
   }
 }

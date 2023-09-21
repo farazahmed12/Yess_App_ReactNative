@@ -155,7 +155,7 @@ const Search = () => {
     <View className="flex-1 px-4  ">
       <Text className="text-black font-bold text-lg mt-3">Explore</Text>
       {/* Search bar */}
-      <View className="flex flex-row items-center justify-around border bg-gray-200 border-gray-400 rounded-lg w-full mt-4">
+      <View className="flex flex-row items-center justify-around border bg-gray-200 border-gray-400 rounded-lg w-full mb-2 mt-4">
         <InputField
           placeholder={'Search Here'}
           isBorder={false}
@@ -190,7 +190,7 @@ const Search = () => {
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() =>
-                  navigation.navigate('CategoryWise', {data: item._id})
+                  navigation.navigate('CategoryWise', {data: item})
                 }
                 className="rounded-2xl overflow-hidden mt-3 mr-5"
                 style={{
@@ -227,7 +227,7 @@ const Search = () => {
                 title={item.title}
                 time={item.createdAt?.slice(0, 10)}
                 src={item.featureImg}
-                customClassName={'mx-0 my-0 w-full'}
+                customClassName={'mx-0 my-2 w-full'}
                 onPress={() => navigation.navigate('BlogDetails', {data: item})}
                 saved={item.isSaved}
                 savedOnPress={() => _handleSaved(item._id, index)}

@@ -38,13 +38,10 @@ const Register = () => {
   const [showPassword, setshowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    user_name: Yup.string()
-      .required('User Name is required')
-      .min(3)
-      .label('User Name'),
     name: Yup.string().required('Name is required').min(3).label('Name'),
     phone_number: Yup.number('Phone Number is required')
-      .min(11)
+      .min(8)
+      .max(12)
       .label('Phone Number'),
     email: Yup.string()
       .email('This email address is not valid')
@@ -93,14 +90,17 @@ const Register = () => {
             Toast.show({
               type: 'success',
               text1: 'User Registered Successfully',
-              onHide: () => navigation.navigate('DrawerStack'),
+              onHide: () =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'HomeStack'}],
+                }),
             });
           })
           .catch(error => {
-            // console.log('error ==>', error);
             Toast.show({
               type: 'error',
-              text1: 'Error While Logging In',
+              text1: error?.response?.data || 'SomeThing Went Wrong',
               autoHide: true,
               visibilityTime: 1000,
             });
@@ -109,7 +109,7 @@ const Register = () => {
       .catch(error => {
         Toast.show({
           type: 'error',
-          text1: 'Error while Registering User',
+          text1: error?.response?.data || 'SomeThing Went Wrong',
         });
       })
       .finally(() => {
@@ -132,7 +132,6 @@ const Register = () => {
 
             <Formik
               initialValues={{
-                user_name: '',
                 email: '',
                 name: '',
                 password: '',
@@ -166,19 +165,6 @@ const Register = () => {
                     />
                     {errors?.name && touched?.name && (
                       <Text className="text-red-700">{errors?.name}</Text>
-                    )}
-                    {/* username */}
-                    <InputField
-                      placeholder="User Name"
-                      value={values.user_name}
-                      handleOnChangeTxt={handleChange('user_name')}
-                      onBlur={() => setFieldTouched('user_name')}
-                      keyboardType={'default'}
-                      marginTailwind="my-1"
-                      paddingTailwind="px-3"
-                    />
-                    {errors?.user_name && touched?.user_name && (
-                      <Text className="text-red-700">{errors?.user_name}</Text>
                     )}
 
                     {/* Email */}
