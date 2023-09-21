@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {images} from '../images';
 import color from '../constants/color';
+import FastImage from 'react-native-fast-image';
 
 const SmallCardWithIcon = ({
   title,
@@ -24,7 +25,7 @@ const SmallCardWithIcon = ({
           <Text className="font-bold text-md text-black flex w-full ">
             {title}
           </Text>
-          {isIcon && <Image className=" h-5 w-5 mt-1" source={iconSrc} />}
+          {isIcon && <FastImage className=" h-5 w-5 mt-1" source={iconSrc} />}
         </View>
         <View className="flex flex-row mt-2 gap-x-3 w-12/12 ml-6">
           <Text

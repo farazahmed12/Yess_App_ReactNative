@@ -133,7 +133,7 @@ const CategoryWise = ({route}) => {
         ) : (
           <View className="w-full ">
             <FlatList
-              data={allBlogs}
+              data={allBlogs.reverse()}
               ListFooterComponent={() => <View className="mb-14" />}
               renderItem={({item, index}) => {
                 return (

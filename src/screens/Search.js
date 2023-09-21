@@ -100,7 +100,6 @@ const Search = () => {
     axios
       .get(`${BASE_URL}/blog/search/blog/${query}`)
       .then(res => {
-        console.log('res ==>', res);
         const fillArr = res?.data?.blog.map(item => {
           return {
             ...item,
@@ -121,6 +120,8 @@ const Search = () => {
         });
       });
   };
+
+  useEffect(() => {}, [query]);
 
   // handle saved
   const _handleSaved = (id, index) => {
@@ -176,44 +177,51 @@ const Search = () => {
         )}
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="flex flex-row justify-between items-center">
-          <Text className="text-black font-bold text-lg mt-2">
-            Explore by Categories
-          </Text>
-        </View>
-        <FlatList
-          data={allCategories}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() =>
-                  navigation.navigate('CategoryWise', {data: item})
-                }
-                className="rounded-2xl overflow-hidden mt-3 mr-5"
-                style={{
-                  height: heightPercentageToDP(30),
-                  width: widthPercentageToDP(35),
-                }}>
-                <ImageBackground
-                  source={{uri: item.img}}
-                  className="h-full w-full flex flex-col justify-end items-start rounded-2xl">
-                  <LinearGradient
-                    colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
-                    className="absolute bottom-0  justify-end w-full">
-                    <View className="p-4">
-                      <Text className="text-white font-bold text-lg">
-                        {item.name}
-                      </Text>
-                    </View>
-                  </LinearGradient>
-                </ImageBackground>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        {query?.length == 0 && allBlogs?.length == 0 ? (
+          <View>
+            <View className="flex flex-row justify-between items-center">
+              <Text className="text-black font-bold text-lg mt-2">
+                Explore by Categories
+              </Text>
+            </View>
+            <FlatList
+              numColumns={2}
+              data={allCategories}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() =>
+                      navigation.navigate('CategoryWise', {data: item})
+                    }
+                    className="rounded-2xl overflow-hidden mt-3 mr-5"
+                    style={{
+                      height: heightPercentageToDP(30),
+                      width: widthPercentageToDP(35),
+                      flex: 1 / 2,
+                    }}>
+                    <ImageBackground
+                      source={{uri: item.img}}
+                      className="h-full w-full flex flex-col justify-end items-start rounded-2xl">
+                      <LinearGradient
+                        colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
+                        className="absolute bottom-0  justify-end w-full">
+                        <View className="p-4">
+                          <Text className="text-white font-bold text-lg">
+                            {item.name}
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </ImageBackground>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        ) : query?.length > 0 && allBlogs?.length == 0 ? (
+          <Text className="text-md text-black ml-4 mt-4">No Blogs Found</Text>
+        ) : null}
 
         <FlatList
           className="mt-3"

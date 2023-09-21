@@ -14,7 +14,7 @@ const PillButton = ({name, onPress, marginTailwind = '', loading = false}) => {
       activeOpacity={0.7}
       onPress={onPress}
       style={{backgroundColor: color.colorPrimary}}
-      className={`rounded-3xl ${marginTailwind} mt-10`}>
+      className={`rounded-3xl ${marginTailwind} `}>
       {loading ? (
         <ActivityIndicator color={'white'} size={'small'} className="py-3" />
       ) : (

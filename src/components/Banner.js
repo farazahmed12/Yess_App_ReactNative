@@ -20,6 +20,7 @@ import {BASE_URL} from '../constants/baseurl';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
+import FastImage from 'react-native-fast-image';
 
 const Banner = ({data}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -72,7 +73,7 @@ const Banner = ({data}) => {
     <View style={{flex: 1, width: '100%'}}>
       <View style={styles.container} className="rounded-2xl">
         <FlatList
-          data={trending ? trending : []}
+          data={trending ? trending?.reverse() : []}
           renderItem={renderBanner}
           keyExtractor={(_, index) => index.toString()}
           pagingEnabled

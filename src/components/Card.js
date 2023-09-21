@@ -4,6 +4,7 @@ import {images} from '../images';
 import color from '../constants/color';
 import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 const Card = ({
   categories,
@@ -23,7 +24,7 @@ const Card = ({
       onPress={onPress}
       activeOpacity={0.8}
       className={`shadow-md flex flex-row  rounded-lg bg-gray-100 ${customClassName}`}>
-      <Image
+      <FastImage
         source={{uri: src}}
         className="w-24 h-28 mr-3 object-cover rounded-l-lg"
       />

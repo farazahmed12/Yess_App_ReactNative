@@ -1,9 +1,10 @@
 import {StyleSheet, Text, View, Image, ActivityIndicator} from 'react-native';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 
 const ImageCard = ({src}) => {
   return (
-    <Image
+    <FastImage
       source={{uri: src}}
       className="w-full h-32 my-4 rounded-lg self-end "
     />

@@ -19,16 +19,17 @@ import {
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
+import axios from 'axios';
 import * as Yup from 'yup';
 import InputField from '../components/Input';
 import PillButton from '../components/PillButton';
 import {images} from '../images';
-import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
 import {setUser} from '../redux/userSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -83,7 +84,6 @@ const Login = () => {
         });
       })
       .catch(error => {
-        console.log('error ==>', error);
         Toast.show({
           type: 'error',
           text1: error?.response?.data || 'SomeThing Went Wrong',
@@ -102,12 +102,12 @@ const Login = () => {
         contentContainerStyle={{
           flex: 1,
           width: '100%',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
           <View className="self-center w-[90%]">
-            <Image source={images.logo} className="w-40 h-40 self-center" />
+            <Image source={images.logo} className="w-28 h-28 self-center" />
 
             <Formik
               initialValues={{
@@ -155,15 +155,26 @@ const Login = () => {
                       isImage={true}
                       onImagePress={() => setshowPassword(!showPassword)}
                       showPassword={showPassword}
+                      autoCapitalize="none"
                     />
                     {errors?.password && touched?.password && (
                       <Text className="text-red-700">{errors?.password}</Text>
                     )}
 
+                    <View className="flex flex-row justify-end mt-3">
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => navigation.navigate('ForgetPassword')}>
+                        <Text className="capitalize underline">
+                          forget password ?
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+
                     <PillButton
                       loading={loading}
                       name={'Login'}
-                      marginTailwind="mt-3"
+                      marginTailwind="mt-5"
                       onPress={handleSubmit}
                     />
                     <View className="flex flex-row justify-center gap-x-2 mx-4 mt-4 items-center">

@@ -188,7 +188,6 @@ const Home = () => {
       .post(`${BASE_URL}/user/saved/blog`, data, config)
       .then(res => {})
       .catch(err => {
-        console.log(err);
         let tempData = [...allBlogs];
         if (tempData[index].isSaved == false) {
           tempData[index].isSaved = true;
@@ -275,6 +274,7 @@ const Home = () => {
 
       <View className="mt-3">
         <FlatList
+          initialNumToRender={5}
           data={allBlogs}
           ListFooterComponent={renderFooter}
           renderItem={({item, index}) => {

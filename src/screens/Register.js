@@ -39,10 +39,10 @@ const Register = () => {
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required('Name is required').min(3).label('Name'),
-    phone_number: Yup.number('Phone Number is required')
-      .min(8)
-      .max(12)
-      .label('Phone Number'),
+    phone_number: Yup.number()
+      .min(60000000, 'Phone Number must be minimum 8 numbers long')
+      .max(999999999999, 'Phone Number is too long')
+      .required('Phone Number is required'),
     email: Yup.string()
       .email('This email address is not valid')
       .required('Please enter your email address!')
@@ -123,7 +123,7 @@ const Register = () => {
         contentContainerStyle={{
           flex: 1,
           width: '100%',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
@@ -194,6 +194,7 @@ const Register = () => {
                       isImage={true}
                       onImagePress={() => setshowPassword(!showPassword)}
                       showPassword={showPassword}
+                      autoCapitalize="none"
                     />
                     {errors?.password && touched?.password && (
                       <Text className="text-red-700">{errors?.password}</Text>
@@ -205,7 +206,7 @@ const Register = () => {
                       value={values.phone_number}
                       handleOnChangeTxt={handleChange('phone_number')}
                       onBlur={() => setFieldTouched('phone_number')}
-                      keyboardType={'default'}
+                      keyboardType={'number-pad'}
                       marginTailwind="my-3"
                       paddingTailwind="px-3"
                     />
@@ -214,7 +215,7 @@ const Register = () => {
                         {errors?.phone_number}
                       </Text>
                     )}
-
+                    {/* Submit button */}
                     <PillButton
                       loading={loading}
                       name={'Register'}
