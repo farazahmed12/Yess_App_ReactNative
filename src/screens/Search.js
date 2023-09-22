@@ -25,6 +25,7 @@ import color from '../constants/color';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
+import AppImageBackground from '../components/AppImageBackground';
 
 const Search = () => {
   // states
@@ -185,7 +186,7 @@ const Search = () => {
               renderItem={({item}) => {
                 return (
                   <TouchableOpacity
-                    activeOpacity={0.7}
+                    activeOpacity={1}
                     onPress={() =>
                       navigation.navigate('CategoryWise', {data: item})
                     }
@@ -195,7 +196,8 @@ const Search = () => {
                       width: widthPercentageToDP(35),
                       flex: 1 / 2,
                     }}>
-                    <ImageBackground
+                    <AppImageBackground
+                      contClass={styles.bannerStyles}
                       source={{uri: item.img}}
                       className="h-full w-full flex flex-col justify-end items-start rounded-2xl">
                       <LinearGradient
@@ -207,7 +209,7 @@ const Search = () => {
                           </Text>
                         </View>
                       </LinearGradient>
-                    </ImageBackground>
+                    </AppImageBackground>
                   </TouchableOpacity>
                 );
               }}
@@ -244,4 +246,13 @@ const Search = () => {
 
 export default Search;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  bannerStyles: {
+    height: '100%',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: heightPercentageToDP(20),
+  },
+});

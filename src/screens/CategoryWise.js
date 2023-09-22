@@ -94,11 +94,6 @@ const CategoryWise = ({route}) => {
         setallBlogs(tempData);
       });
   };
-  useEffect(() => {
-    console.log('====================================');
-    console.log('==>>', allBlogs);
-    console.log('====================================');
-  }, []);
 
   if (loading) {
     return (

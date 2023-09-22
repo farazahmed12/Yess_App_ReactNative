@@ -29,6 +29,7 @@ import {setLoader} from '../redux/globalState';
 import BackButton from '../components/BackButton';
 
 import RenderHtml from 'react-native-render-html';
+import AppImageBackground from '../components/AppImageBackground';
 
 const {width, height} = Dimensions.get('window');
 
@@ -70,11 +71,12 @@ const BlogDetails = ({route}) => {
 
   return (
     <ScrollView className="px-4 flex-1 mt-2">
-      <ImageBackground
+      <AppImageBackground
         source={{
           uri: data.featureImg,
         }}
-        className="w-full h-44 rounded-2xl overflow-hidden "></ImageBackground>
+        contClass={styles.bannerStyes}
+        className="w-full h-44 rounded-2xl overflow-hidden "></AppImageBackground>
 
       <BackButton img={images.AngleLeft} onPress={() => navigation.goBack()} />
 
@@ -143,4 +145,11 @@ const BlogDetails = ({route}) => {
 
 export default BlogDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  bannerStyes: {
+    width: '100%',
+    overflow: 'hidden',
+    height: heightPercentageToDP(28),
+    borderRadius: widthPercentageToDP(5),
+  },
+});

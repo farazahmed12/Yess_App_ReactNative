@@ -47,7 +47,11 @@ const Banner = ({data}) => {
 
   const renderBanner = ({item}) => {
     return (
-      <View style={styles.renderBannerStyle} className="rounded-2xl">
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('BlogDetails', {data: item})}
+        style={styles.renderBannerStyle}
+        className="rounded-2xl">
         <AppImageBackground
           source={{uri: item.featureImg}}
           resizeMode="cover"
@@ -56,18 +60,14 @@ const Banner = ({data}) => {
           <LinearGradient
             colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
             className="absolute bottom-0  justify-end p-2 py-5  w-full">
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate('BlogDetails', {data: item})}>
-              <Text className="text-white text-xl  ">
-                {item.title?.length > 69
-                  ? item.title?.slice(0, 70) + '...'
-                  : item.title}
-              </Text>
-            </TouchableOpacity>
+            <Text className="text-white text-xl  ">
+              {item.title?.length > 69
+                ? item.title?.slice(0, 70) + '...'
+                : item.title}
+            </Text>
           </LinearGradient>
         </AppImageBackground>
-      </View>
+      </TouchableOpacity>
     );
   };
 
