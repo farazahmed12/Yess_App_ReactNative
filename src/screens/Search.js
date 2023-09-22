@@ -77,11 +77,32 @@ const Search = () => {
   };
 
   // get all saved
-  const getAllSaved = () => {
+  const _hanldeSearchSubmit = () => {
     axios
       .get(`${BASE_URL}/user/saved/blogs`, config)
-      .then(res => {
-        setallSaved(res.data);
+      .then(resb => {
+        axios
+          .get(`${BASE_URL}/blog/search/blog/${query}`)
+          .then(res => {
+            const fillArr = res?.data?.blog.map(item => {
+              return {
+                ...item,
+                isSaved:
+                  resb?.data?.length > 0
+                    ? resb?.data.some(x => x?._id == item._id)
+                    : false,
+              };
+            });
+            setAllBlogs(fillArr);
+          })
+          .catch(error => {
+            Toast.show({
+              type: 'error',
+              text1: 'Error While Searching For Blog ',
+              visibilityTime: 1000,
+              autoHide,
+            });
+          });
       })
       .catch(error => {
         console.log('error');
@@ -91,46 +112,16 @@ const Search = () => {
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
       getAllCategories();
-      getAllSaved();
     });
     return focusListener;
   }, []);
-
-  const _hanldeSearchSubmit = () => {
-    axios
-      .get(`${BASE_URL}/blog/search/blog/${query}`)
-      .then(res => {
-        const fillArr = res?.data?.blog.map(item => {
-          return {
-            ...item,
-            isSaved:
-              allSaved?.length > 0
-                ? allSaved.some(x => x?._id == item._id)
-                : false,
-          };
-        });
-        setAllBlogs(fillArr);
-      })
-      .catch(error => {
-        Toast.show({
-          type: 'error',
-          text1: 'Error While Searching For Blog ',
-          visibilityTime: 1000,
-          autoHide,
-        });
-      });
-  };
 
   useEffect(() => {}, [query]);
 
   // handle saved
   const _handleSaved = (id, index) => {
     let tempData = [...allBlogs];
-    if (tempData[index].isSaved) {
-      tempData[index].isSaved = false;
-    } else {
-      tempData[index].isSaved = true;
-    }
+    tempData[index].isSaved = !tempData[index].isSaved;
     setAllBlogs(tempData);
 
     let data = {
@@ -143,11 +134,7 @@ const Search = () => {
       .catch(err => {
         console.log(err);
         let tempData = [...allBlogs];
-        if (tempData[index].isSaved == false) {
-          tempData[index].isSaved = true;
-        } else {
-          tempData[index].isSaved = false;
-        }
+        tempData[index].isSaved = !tempData[index].isSaved;
         setAllBlogs(tempData);
       });
   };

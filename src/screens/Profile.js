@@ -48,7 +48,10 @@ const Profile = () => {
   const {user} = useSelector(state => state.user.user);
 
   const _handleLogout = () => {
-    navigation.navigate(`AuthStack`);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'AuthStack'}],
+    });
     dispatch(setUser({}));
   };
 

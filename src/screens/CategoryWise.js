@@ -37,36 +37,31 @@ const CategoryWise = ({route}) => {
   };
 
   // get all saved
-  const getAllSaved = () => {
-    axios
-      .get(`${BASE_URL}/user/saved/blogs`, config)
-      .then(res => {
-        setallSaved(res?.data);
-      })
-      .catch(error => {
-        console.log('error');
-      });
-  };
-
-  // get blogs by category
   const getBlogsByCAtegory = () => {
     setloading(true);
     axios
-      .get(`${BASE_URL}/blog/search/blog/category/${data?._id}`)
-      .then(res => {
-        const fillArr = res?.data?.blog?.map(item => {
-          return {
-            ...item,
-            isSaved:
-              allSaved?.length > 0
-                ? allSaved.some(x => x?._id == item._id)
-                : false,
-          };
-        });
-        setallBlogs(fillArr);
+      .get(`${BASE_URL}/user/saved/blogs`, config)
+      .then(resb => {
+        axios
+          .get(`${BASE_URL}/blog/search/blog/category/${data?._id}`)
+          .then(res => {
+            const fillArr = res?.data?.blog?.map(item => {
+              return {
+                ...item,
+                isSaved:
+                  resb?.data?.length > 0
+                    ? resb?.data?.some(x => x?._id == item._id)
+                    : false,
+              };
+            });
+            setallBlogs(fillArr);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       })
       .catch(error => {
-        console.log(error);
+        console.log('error');
       })
       .finally(() => {
         setloading(false);
@@ -74,18 +69,14 @@ const CategoryWise = ({route}) => {
   };
 
   useEffect(() => {
-    getAllSaved();
     getBlogsByCAtegory();
   }, [data?._id]);
 
   // handle saved
   const _handleSaved = (id, index) => {
     let tempData = [...allBlogs];
-    if (tempData[index].isSaved) {
-      tempData[index].isSaved = false;
-    } else {
-      tempData[index].isSaved = true;
-    }
+    tempData[index].isSaved = !tempData[index].isSaved;
+
     setallBlogs(tempData);
 
     let data = {
@@ -98,11 +89,8 @@ const CategoryWise = ({route}) => {
       .catch(err => {
         console.log(err);
         let tempData = [...allBlogs];
-        if (tempData[index].isSaved == false) {
-          tempData[index].isSaved = true;
-        } else {
-          tempData[index].isSaved = false;
-        }
+
+        tempData[index].isSaved = !tempData[index].isSaved;
         setallBlogs(tempData);
       });
   };

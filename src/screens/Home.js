@@ -51,38 +51,33 @@ const Home = () => {
     'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
   ];
 
-  // get all saved
-  const getAllSaved = () => {
-    axios
-      .get(`${BASE_URL}/user/saved/blogs`, config)
-      .then(res => {
-        setallSaved(res.data);
-      })
-      .catch(error => {
-        console.log('error');
-      });
-  };
-
   // get all blogs
   const getAllBlogs = () => {
     axios
-      .get(`${BASE_URL}/blog/all/blogs`)
-      .then(res => {
-        const fillArr = res.data.data.map(item => {
-          return {
-            ...item,
-            isSaved:
-              allSaved?.length > 0
-                ? allSaved.some(x => x?._id == item._id)
-                : false,
-          };
-        });
-        setAllBlogs(fillArr);
+      .get(`${BASE_URL}/user/saved/blogs`, config)
+      .then(resb => {
+        axios
+          .get(`${BASE_URL}/blog/all/blogs`)
+          .then(res => {
+            const fillArr = res.data.data.map(item => {
+              return {
+                ...item,
+                isSaved:
+                  resb.data?.length > 0
+                    ? resb.data.some(x => x?._id == item._id)
+                    : false,
+              };
+            });
+            setAllBlogs(fillArr);
 
-        setTotalPages(res?.data?.totalPages);
+            setTotalPages(res?.data?.totalPages);
+          })
+          .catch(err => {
+            console.log('error ==>', err);
+          });
       })
-      .catch(err => {
-        console.log('error ==>', err);
+      .catch(error => {
+        console.log('error');
       });
   };
 
@@ -100,7 +95,6 @@ const Home = () => {
 
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
-      getAllSaved();
       getAllCategories();
       getAllBlogs();
     });
@@ -173,11 +167,8 @@ const Home = () => {
   // handle saved
   const _handleSaved = (id, index) => {
     let tempData = [...allBlogs];
-    if (tempData[index].isSaved) {
-      tempData[index].isSaved = false;
-    } else {
-      tempData[index].isSaved = true;
-    }
+    tempData[index].isSaved = !tempData[index].isSaved;
+
     setAllBlogs(tempData);
 
     let data = {
@@ -189,11 +180,7 @@ const Home = () => {
       .then(res => {})
       .catch(err => {
         let tempData = [...allBlogs];
-        if (tempData[index].isSaved == false) {
-          tempData[index].isSaved = true;
-        } else {
-          tempData[index].isSaved = false;
-        }
+        tempData[index].isSaved = !tempData[index].isSaved;
         setAllBlogs(tempData);
       });
   };
