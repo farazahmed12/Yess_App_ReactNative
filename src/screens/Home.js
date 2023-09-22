@@ -154,10 +154,13 @@ const Home = () => {
             onPress={getData}
             style={{backgroundColor: color.colorPrimary}}
             className=" w-full flex flex-row rounded-md justify-center items-center py-2">
-            <Text className="text-white text-md font-semibold">Load More</Text>
             {loading ? (
               <ActivityIndicator color="white" style={{marginLeft: 8}} />
-            ) : null}
+            ) : (
+              <Text className="text-white text-md font-semibold flex-1 text-center ">
+                Load More
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
       );

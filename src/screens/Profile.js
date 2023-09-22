@@ -88,7 +88,9 @@ const Profile = () => {
         activeOpacity={0.8}
         onPress={() => _handleLogout()}
         className="my-2 py-5 px-7 flex flex-row justify-center rounded-md shadow bg-red-600">
-        <Text className="text-md uppercase font-bold text-white">Logout</Text>
+        <Text className="text-md uppercase flex-1 text-center font-bold text-white">
+          Logout
+        </Text>
       </TouchableOpacity>
     </View>
   );
