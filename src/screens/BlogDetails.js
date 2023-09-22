@@ -74,23 +74,7 @@ const BlogDetails = ({route}) => {
         source={{
           uri: data.featureImg,
         }}
-        className="w-full h-44 rounded-2xl overflow-hidden ">
-        {/* <View className="flex flex-row justify-between">
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{backgroundColor: color.colorPrimary}}
-            className="p-2 m-2 rounded-full "
-            onPress={() => navigation.goBack()}>
-            <Image
-              source={images.AngleLeft}
-              className="w-4 h-4  "
-              style={{
-                tintColor: 'white',
-              }}
-            />
-          </TouchableOpacity>
-        </View> */}
-      </ImageBackground>
+        className="w-full h-44 rounded-2xl overflow-hidden "></ImageBackground>
 
       <BackButton img={images.AngleLeft} onPress={() => navigation.goBack()} />
 
@@ -139,6 +123,14 @@ const BlogDetails = ({route}) => {
                 <RenderHtml
                   contentWidth={width}
                   source={{html: item.content}}
+                  baseStyle={{
+                    color: 'black',
+                  }}
+                  tagsStyles={{
+                    a: {
+                      color: 'black', // Set the color for links
+                    },
+                  }}
                 />
               );
             }
