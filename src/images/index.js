@@ -17,4 +17,5 @@ export const images = {
   HeartEmpty: require('./heart_empty.png'),
   EyeClose: require('./eyeClose.png'),
   EyeOpen: require('./eyeOpen.png'),
+  PlaceholderImage: require('./placeholder.png'),
 };

@@ -21,6 +21,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 import FastImage from 'react-native-fast-image';
+import AppImageBackground from './AppImageBackground';
 
 const Banner = ({data}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -47,10 +48,11 @@ const Banner = ({data}) => {
   const renderBanner = ({item}) => {
     return (
       <View style={styles.renderBannerStyle} className="rounded-2xl">
-        <ImageBackground
+        <AppImageBackground
           source={{uri: item.featureImg}}
           resizeMode="cover"
-          style={styles.bannerImg}>
+          style={styles.bannerImg}
+          contClass={styles.bannerImg}>
           <LinearGradient
             colors={['rgba(4,4,4,0.0)', 'rgba(4,4,4,0.90)']}
             className="absolute bottom-0  justify-end p-2 py-5  w-full">
@@ -64,7 +66,7 @@ const Banner = ({data}) => {
               </Text>
             </TouchableOpacity>
           </LinearGradient>
-        </ImageBackground>
+        </AppImageBackground>
       </View>
     );
   };
