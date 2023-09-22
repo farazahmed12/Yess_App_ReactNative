@@ -14,6 +14,7 @@ const InputField = ({
   isImage = false,
   showPassword = false,
   onImagePress,
+  value,
   ...props
 }) => {
   return (
@@ -30,6 +31,7 @@ const InputField = ({
         placeholder={placeholder}
         placeholderTextColor={'black'}
         keyboardType={keyboardType}
+        value={value}
         onChangeText={handleOnChangeTxt}
         {...props}
       />

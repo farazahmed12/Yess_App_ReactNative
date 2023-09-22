@@ -13,7 +13,7 @@ function AppImageBackground({children, ...props}) {
         {...props}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
-        onError={error => alert(`error ==>`, error)}>
+        onError={error => console.log('Error =========>', error)}>
         {children}
       </ImageBackground>
       {loading && (

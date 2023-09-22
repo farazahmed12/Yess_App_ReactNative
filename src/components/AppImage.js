@@ -13,7 +13,7 @@ function AppImage({...props}) {
         {...props}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
-        onError={error => alert(`error ==>`, error)}
+        onError={({nativeEvent: {error}}) => console.log(error)}
       />
       {loading && (
         <View

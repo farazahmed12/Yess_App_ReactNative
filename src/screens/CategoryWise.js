@@ -94,6 +94,11 @@ const CategoryWise = ({route}) => {
         setallBlogs(tempData);
       });
   };
+  useEffect(() => {
+    console.log('====================================');
+    console.log('==>>', allBlogs);
+    console.log('====================================');
+  }, []);
 
   if (loading) {
     return (
@@ -121,7 +126,7 @@ const CategoryWise = ({route}) => {
         ) : (
           <View className="w-full ">
             <FlatList
-              data={allBlogs.reverse()}
+              data={allBlogs}
               ListFooterComponent={() => <View className="mb-14" />}
               renderItem={({item, index}) => {
                 return (

@@ -57,17 +57,12 @@ const Saved = () => {
             isSaved: true,
           };
         });
-        setAllSaved(fillArr);
+        setAllSaved(fillArr?.reverse());
       })
       .catch(error => {
         console.log('error =+>', error);
       });
   };
-
-  // useEffect(() => {
-  //   getAllCategories();
-  //   getAllSaved();
-  // }, []);
 
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {

@@ -112,11 +112,17 @@ const Search = () => {
   useEffect(() => {
     const focusListener = navigation.addListener('focus', () => {
       getAllCategories();
+      setAllBlogs([]);
+      setQuery('');
     });
     return focusListener;
   }, []);
 
-  useEffect(() => {}, [query]);
+  useEffect(() => {
+    if (query?.length == 0) {
+      setAllBlogs([]);
+    }
+  }, [query]);
 
   // handle saved
   const _handleSaved = (id, index) => {
@@ -151,6 +157,7 @@ const Search = () => {
           keyboardType={'default'}
           handleOnChangeTxt={e => setQuery(e)}
           onEndEditing={() => _hanldeSearchSubmit()}
+          value={query}
         />
 
         {true ? (
