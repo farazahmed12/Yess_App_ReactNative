@@ -30,6 +30,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {setLoader} from '../redux/globalState';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -54,6 +55,7 @@ const Login = () => {
 
   const signIn = async value => {
     setloading(true);
+    dispatch(setLoader(true));
     const fcmToken = await AsyncStorage.getItem('fcmToken');
     axios
       .post(`${BASE_URL}/user/login/user`, value)
@@ -72,7 +74,7 @@ const Login = () => {
               console.log(error);
             });
         }
-
+        dispatch(setLoader(false));
         Toast.show({
           type: 'success',
           text1: 'Login Successfully',
@@ -84,6 +86,7 @@ const Login = () => {
         });
       })
       .catch(error => {
+        dispatch(setLoader(false));
         Toast.show({
           type: 'error',
           text1: error?.response?.data || 'SomeThing Went Wrong',
@@ -93,6 +96,7 @@ const Login = () => {
       })
       .finally(() => {
         setloading(false);
+        dispatch(setLoader(false));
       });
   };
 
@@ -172,7 +176,7 @@ const Login = () => {
                     </View>
 
                     <PillButton
-                      loading={loading}
+                      loading={false}
                       name={'Login'}
                       marginTailwind="mt-5"
                       onPress={handleSubmit}

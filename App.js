@@ -53,6 +53,7 @@ function App() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
+        <Loader />
         <PersistGate persistor={persistor}>
           <NavigationContainer ref={ref => setNavigator(ref)}>
             <SafeAreaView>

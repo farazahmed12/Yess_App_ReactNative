@@ -23,7 +23,7 @@ const {width, height} = Dimensions.get('window');
 import FastImage from 'react-native-fast-image';
 import AppImageBackground from './AppImageBackground';
 
-const Banner = ({data}) => {
+const Banner = ({}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [activeIndex, setActiveIndex] = useState(0);
   const [trending, settrending] = useState([]);
@@ -36,7 +36,7 @@ const Banner = ({data}) => {
       axios
         .get(`${BASE_URL}/blog/search/blog/category/650a38af428497154edf2a3a`)
         .then(res => {
-          settrending(res?.data?.blog?.slice(0, 5));
+          settrending(res?.data?.data?.blog?.slice(0, 5));
         })
         .catch(error => {
           console.log(error);
@@ -75,7 +75,7 @@ const Banner = ({data}) => {
     <View style={{flex: 1, width: '100%'}}>
       <View style={styles.container} className="rounded-2xl">
         <FlatList
-          data={trending ? trending?.reverse() : []}
+          data={trending ? trending : []}
           renderItem={renderBanner}
           keyExtractor={(_, index) => index.toString()}
           pagingEnabled

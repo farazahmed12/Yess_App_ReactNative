@@ -17,8 +17,9 @@ import Card from '../components/Card';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {BASE_URL} from '../constants/baseurl';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {setLoader} from '../redux/globalState';
 
 const Home = () => {
   // states
@@ -39,17 +40,11 @@ const Home = () => {
     },
   };
 
+  // dispatch
+  const dispatch = useDispatch();
+
   // navigation
   const navigation = useNavigation();
-
-  const imgData = [
-    'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
-    'https://images.unsplash.com/photo-1601132359864-c974e79890ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
-
-    'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
-    'https://images.unsplash.com/photo-1601132359864-c974e79890ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
-    'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9ib3R8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=400&q=60',
-  ];
 
   // get all blogs
   const getAllBlogs = () => {
@@ -209,10 +204,11 @@ const Home = () => {
   // handle category select
   const _handleCatSelect = (name, id) => {
     setSelCategory(name);
+    dispatch(setLoader(true));
     axios
       .get(`${BASE_URL}/blog/search/blog/category/${id}`)
       .then(res => {
-        const newArr = res?.data?.blog?.map(item => {
+        const newArr = res?.data?.data?.blog?.map(item => {
           return {
             ...item,
             isSaved:
@@ -225,6 +221,9 @@ const Home = () => {
       })
       .catch(error => {
         console.log(error);
+      })
+      .finally(() => {
+        dispatch(setLoader(false));
       });
   };
 
@@ -238,7 +237,7 @@ const Home = () => {
       <View className="flex flex-row px-4 justify-between mt-3 mb-3">
         <Text className="font-bold text-lg flex-1  text-black">Home</Text>
       </View>
-      <Banner data={imgData} />
+      <Banner />
 
       <View className="mt-5 flex flex-row items-center gap-x-2 px-4">
         <FlatList
@@ -263,24 +262,30 @@ const Home = () => {
       </View>
 
       <View className="mt-3">
-        <FlatList
-          initialNumToRender={5}
-          data={allBlogs}
-          ListFooterComponent={renderFooter}
-          renderItem={({item, index}) => {
-            return (
-              <Card
-                categories={item.categories}
-                title={item.title}
-                time={item.createdAt?.slice(0, 10)}
-                src={item.featureImg}
-                onPress={() => navigation.navigate('BlogDetails', {data: item})}
-                saved={item.isSaved}
-                savedOnPress={() => _handleSaved(item._id, index)}
-              />
-            );
-          }}
-        />
+        {allBlogs?.length > 0 ? (
+          <FlatList
+            initialNumToRender={5}
+            data={allBlogs}
+            ListFooterComponent={renderFooter}
+            renderItem={({item, index}) => {
+              return (
+                <Card
+                  categories={item.categories}
+                  title={item.title}
+                  time={item.createdAt?.slice(0, 10)}
+                  src={item.featureImg}
+                  onPress={() =>
+                    navigation.navigate('BlogDetails', {data: item})
+                  }
+                  saved={item.isSaved}
+                  savedOnPress={() => _handleSaved(item._id, index)}
+                />
+              );
+            }}
+          />
+        ) : (
+          <Text className="text-xs text-black ml-4 mt-3 ">No Blogs Found</Text>
+        )}
       </View>
     </ScrollView>
   );

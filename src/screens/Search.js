@@ -68,7 +68,7 @@ const Search = () => {
   // get all Categories
   const getAllCategories = () => {
     axios
-      .get(`${BASE_URL}/blog/all/category`)
+      .get(`${BASE_URL}/blog/all/category/?limit=100`)
       .then(res => {
         setAllCategories(res?.data?.allCategory);
       })
@@ -85,7 +85,8 @@ const Search = () => {
         axios
           .get(`${BASE_URL}/blog/search/blog/${query}`)
           .then(res => {
-            const fillArr = res?.data?.blog.map(item => {
+            console.log('res ======>', res?.data);
+            const fillArr = res?.data?.data?.blog.map(item => {
               return {
                 ...item,
                 isSaved:
@@ -183,6 +184,10 @@ const Search = () => {
               numColumns={2}
               data={allCategories}
               showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 10,
+              }}
+              columnWrapperStyle={{gap: 10}}
               renderItem={({item}) => {
                 return (
                   <TouchableOpacity
@@ -190,7 +195,7 @@ const Search = () => {
                     onPress={() =>
                       navigation.navigate('CategoryWise', {data: item})
                     }
-                    className="rounded-2xl overflow-hidden mt-3 mr-5"
+                    className="rounded-2xl overflow-hidden"
                     style={{
                       height: heightPercentageToDP(30),
                       width: widthPercentageToDP(35),

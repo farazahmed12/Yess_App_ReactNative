@@ -23,23 +23,17 @@ const MainStack = () => {
       initialRouteName={
         Object.keys(user).length > 0 ? 'HomeStack' : 'AuthStack'
       }>
-      {isLoader ? (
-        <Loader />
-      ) : (
-        <>
-          <Stack.Screen
-            name="AuthStack"
-            component={AuthStack}
-            options={{headerShown: false}}
-          />
+      <Stack.Screen
+        name="AuthStack"
+        component={AuthStack}
+        options={{headerShown: false}}
+      />
 
-          <Stack.Screen
-            name="HomeStack"
-            component={HomeStack}
-            options={{headerShown: false}}
-          />
-        </>
-      )}
+      <Stack.Screen
+        name="HomeStack"
+        component={HomeStack}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

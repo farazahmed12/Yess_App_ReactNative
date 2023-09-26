@@ -12,14 +12,18 @@ import {BASE_URL} from '../constants/baseurl';
 import {useNavigation} from '@react-navigation/native';
 
 import Card from '../components/Card';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import BackButton from '../components/BackButton';
 import {images} from '../images';
 import color from '../constants/color';
+import {setLoader} from '../redux/globalState';
 
 const CategoryWise = ({route}) => {
   // data
   const data = route.params.data;
+
+  // dispatch
+  const dispatch = useDispatch();
 
   // states
   const [allBlogs, setallBlogs] = useState([]);
@@ -38,14 +42,14 @@ const CategoryWise = ({route}) => {
 
   // get all saved
   const getBlogsByCAtegory = () => {
-    setloading(true);
+    dispatch(setLoader(true));
     axios
       .get(`${BASE_URL}/user/saved/blogs`, config)
       .then(resb => {
         axios
-          .get(`${BASE_URL}/blog/search/blog/category/${data?._id}`)
+          .get(`${BASE_URL}/blog/search/blog/category/${data?._id}/?limit=100`)
           .then(res => {
-            const fillArr = res?.data?.blog?.map(item => {
+            const fillArr = res?.data?.data?.blog?.map(item => {
               return {
                 ...item,
                 isSaved:
@@ -64,7 +68,7 @@ const CategoryWise = ({route}) => {
         console.log('error');
       })
       .finally(() => {
-        setloading(false);
+        dispatch(setLoader(false));
       });
   };
 
@@ -95,19 +99,8 @@ const CategoryWise = ({route}) => {
       });
   };
 
-  if (loading) {
-    return (
-      <ActivityIndicator
-        className="mt-20"
-        size={'large'}
-        animating={true}
-        color={color.colorPrimary}
-      />
-    );
-  }
-
   return (
-    <ScrollView className="flex-1   " showsVerticalScrollIndicator={false}>
+    <View className="flex-1   ">
       <View className="flex flex-row justify-between mt-3 mb-1 px-4">
         <Text className="font-bold text-lg text-black">
           Category/{data?.name}
@@ -143,7 +136,7 @@ const CategoryWise = ({route}) => {
           </View>
         )}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
